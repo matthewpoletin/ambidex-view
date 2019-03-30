@@ -10,6 +10,12 @@ Assets/AssetStoreTools*
 # Never ignore Asset meta data
 ![Aa]ssets/**/*.meta
 
+# Never ignore Unity packages
+![Pp]ackages/manifest.json
+
+# JetBrains Rider plugin dll
+**/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll*
+
 # Visual Studio cache directory
 .vs/
 
