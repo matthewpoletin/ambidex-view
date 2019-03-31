@@ -10,9 +10,6 @@ Assets/AssetStoreTools*
 # Never ignore Asset meta data
 ![Aa]ssets/**/*.meta
 
-# Never ignore Unity packages
-![Pp]ackages/manifest.json
-
 # JetBrains Rider plugin dll
 **/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll*
 
@@ -280,6 +277,7 @@ PublishScripts/
 *.nupkg
 # The packages folder can be ignored because of Package Restore
 **/[Pp]ackages/*
+
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
@@ -497,3 +495,6 @@ Temporary Items
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Never ignore Unity packages
+![Pp]ackages/manifest.json
