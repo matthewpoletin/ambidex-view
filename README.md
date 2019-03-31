@@ -1,6 +1,17 @@
 # ambidex-view
 Visualization tools for Ambidex
 
-## Required Unity Packages
-- ProBuilder 4.0.3
-- ProGrids 3.0.3
+## Setup
+- Install latest [mono](https://www.mono-project.com/download/stable/#download-lin) version.
+```bash
+sudo apt install mono-complete
+```
+- Install [nuget](https://docs.microsoft.com/ru-ru/nuget/install-nuget-client-tools).
+
+## Build
+- Restore nuget packages.
+```bash
+# Linux
+mono nuget install packages.config
+```
+- Open unity project and restore unity packages via unity package manager.
