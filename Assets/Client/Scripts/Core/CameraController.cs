@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Client.Scripts.View
+namespace Client.Scripts.Core
 {
     [RequireComponent(typeof(Camera))]
     public class CameraController : MonoBehaviour
@@ -63,8 +63,8 @@ namespace Client.Scripts.View
         // Логика камеры в данном методе, чтобы обновлять камеру только после обновления логики окружения
         private void LateUpdate()
         {
-            // По ПКМ и левой кнопки Alt
-            if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftAlt))
+            // По ПКМ
+            if (Input.GetMouseButton(1))
             {
                 //// Изменение угла
                 _xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;

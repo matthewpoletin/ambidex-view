@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Tip
+  - Beam
+  - RotaryJoint
+  - RevoluteJoint
   layers:
   - Default
   - TransparentFX

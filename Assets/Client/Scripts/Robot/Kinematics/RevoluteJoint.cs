@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Client.Scripts.Robot.Kinematics
 {
     public class RevoluteJoint : KinematicJoint
