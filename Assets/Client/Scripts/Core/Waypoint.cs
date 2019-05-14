@@ -9,7 +9,7 @@ namespace Client.Scripts.Core
         {
             if (other.CompareTag("Tip"))
             {
-                LogController.Instance.WriteInfoLog($"Waypoint {name} collected");
+                LogController.Instance.WriteInfoLog($"{name} collected");
                 Destroy(gameObject);
             }
         }
