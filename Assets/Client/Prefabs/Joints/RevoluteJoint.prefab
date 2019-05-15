@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3157649247122746966}
-  - component: {fileID: -1688412776562147200}
   - component: {fileID: 3291645315126906936}
+  - component: {fileID: -1688412776562147200}
   m_Layer: 0
   m_Name: RevoluteJoint
   m_TagString: RevoluteJoint
@@ -33,20 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1688412776562147200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3157649247122746965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b19008f8a853f4178b4bee53ffb00d61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstObject: {fileID: 0}
-  secondObject: {fileID: 0}
 --- !u!136 &3291645315126906936
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -61,6 +47,20 @@ CapsuleCollider:
   m_Height: 0.3
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-1688412776562147200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3157649247122746965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e598349ee6f746d8bfacb97e95d8ee8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstObject: {fileID: 0}
+  secondObject: {fileID: 0}
 --- !u!1 &3720629413200734280
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +118,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d25f9873f2d6443588f0281b6a5b31f3, type: 2}
+  - {fileID: 2100000, guid: 3556db47a4f4a4918b4391563f218b2b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
