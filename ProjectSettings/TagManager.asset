@@ -8,6 +8,7 @@ TagManager:
   - Beam
   - RotaryJoint
   - RevoluteJoint
+  - Waypoint
   layers:
   - Default
   - TransparentFX
