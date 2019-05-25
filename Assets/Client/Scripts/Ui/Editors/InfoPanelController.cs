@@ -1,7 +1,7 @@
 ﻿using Client.Scripts.Robot.Kinematics;
 using UnityEngine;
 
-namespace Client.Scripts
+namespace Client.Scripts.Ui.Editors
 {
     public class InfoPanelController : MonoBehaviour
     {
@@ -18,7 +18,7 @@ namespace Client.Scripts
         }
 
         #endregion
-        
+
         public Transform contentHolder;
 
         private void Start()
@@ -26,7 +26,8 @@ namespace Client.Scripts
             HideAll();
         }
 
-        public GameObject rotaryJointEditorGo;
+        public RotaryJointEditor rotaryJointEditor;
+        public RevoluteJointEditor revoluteJointEditor;
 
         private void HideAll()
         {
@@ -40,13 +41,27 @@ namespace Client.Scripts
         {
             HideAll();
 
-            rotaryJointEditorGo.SetActive(true);
-            rotaryJointEditorGo.GetComponent<RotaryJointEditorController>().Activate(rotaryJoint);
+            rotaryJointEditor.gameObject.SetActive(true);
+            rotaryJointEditor.Activate(rotaryJoint);
         }
 
         public void HideRotaryJointEditor()
         {
-            rotaryJointEditorGo.GetComponent<RotaryJointEditorController>().Deactivate();
+            rotaryJointEditor.Deactivate();
+            HideAll();
+        }
+
+        public void ShowRevoluteJointEditor(RevoluteJoint revoluteJoint)
+        {
+            HideAll();
+
+            revoluteJointEditor.gameObject.SetActive(true);
+            revoluteJointEditor.Activate(revoluteJoint);
+        }
+
+        public void HideRevoluteJointEditor()
+        {
+            revoluteJointEditor.Deactivate();
             HideAll();
         }
     }

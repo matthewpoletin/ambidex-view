@@ -153,6 +153,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AngleSelector
       objectReference: {fileID: 0}
+    - target: {fileID: 8084431760397540053, guid: 45d4861506ae74e6db08a89a1461e12f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2525496191967247480, guid: 45d4861506ae74e6db08a89a1461e12f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -221,7 +226,7 @@ PrefabInstance:
     - target: {fileID: 2525496191967247480, guid: 45d4861506ae74e6db08a89a1461e12f,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45d4861506ae74e6db08a89a1461e12f, type: 3}

@@ -57,6 +57,7 @@ namespace Client.Scripts.Robot
                         break;
                     case "RevoluteJoint":
                         var revoluteJointGo = RobotFactory.Instance.BuildRevoluteJoint(item, nextParent).Item1;
+                        revoluteJointGo.GetComponent<RevoluteJoint>().Setup(item);
                         _jointData.Add(revoluteJointGo, JointType.Revolute);
                         break;
                     case "Tip":

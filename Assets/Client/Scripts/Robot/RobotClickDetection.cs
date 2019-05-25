@@ -1,4 +1,5 @@
 ﻿using Client.Scripts.Robot.Kinematics;
+using Client.Scripts.Ui.Editors;
 using UnityEngine;
 
 namespace Client.Scripts.Robot
@@ -61,6 +62,8 @@ namespace Client.Scripts.Robot
                         UnselectObject();
 
                         _selectedObjectType = SelectedObjectType.RevoluteJoint;
+                        InfoPanelController.Instance.ShowRevoluteJointEditor(
+                            hit.transform.GetComponent<RevoluteJoint>());
                     }
                     else if (hit.transform.CompareTag("Tip"))
                     {
@@ -87,6 +90,7 @@ namespace Client.Scripts.Robot
                     InfoPanelController.Instance.HideRotaryJointEditor();
                     break;
                 case SelectedObjectType.RevoluteJoint:
+                    InfoPanelController.Instance.HideRevoluteJointEditor();
                     break;
                 case SelectedObjectType.Tip:
                     break;

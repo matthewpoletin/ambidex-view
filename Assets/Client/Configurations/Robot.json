@@ -8,7 +8,11 @@
     {
       "Type": "RevoluteJoint",
       "Subtype": "",
-      "Length": 1
+      "Length": 1,
+      "RotationY": 90,
+      "InitialAngle": 180,
+      "MinAngle": 90,
+      "MaxAngle": 270
     },
     {
       "Type": "Beam",

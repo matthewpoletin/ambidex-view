@@ -3,9 +3,9 @@ using Client.Scripts.Robot.Kinematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Client.Scripts
+namespace Client.Scripts.Ui.Editors
 {
-    public class RotaryJointEditorController : MonoBehaviour
+    public class RotaryJointEditor : MonoBehaviour
     {
         private RotaryJoint _selectedRotaryJoint = null;
         private AngleSelectorController _angleSelectorController = null;
@@ -16,7 +16,10 @@ namespace Client.Scripts
         public InputField maxAngleInputField;
         public Slider maxAngleSlider;
 
-        private float _minAngle = 0.0f;
+        public InputField initialAngleInputField;
+        public Slider initialAngleSlider;
+
+        private float _minAngle = 0f;
 
         private float MinAngle
         {
@@ -30,7 +33,7 @@ namespace Client.Scripts
             }
         }
 
-        private float _maxAngle = 360.0f;
+        private float _maxAngle = 360f;
 
         private float MaxAngle
         {
@@ -44,10 +47,25 @@ namespace Client.Scripts
             }
         }
 
+        private float _initialAngle = 180f;
+
+        public float InitialAngle
+        {
+            get => _initialAngle;
+            set
+            {
+                _initialAngle = Mathf.Clamp(value, MinAngle, MaxAngle);
+                initialAngleInputField.text = _initialAngle.ToString(CultureInfo.CurrentCulture);
+                _angleSelectorController.InitialAngle = _initialAngle;
+                _selectedRotaryJoint.initialAngle = _initialAngle;
+            }
+        }
+
         private void Start()
         {
             minAngleSlider.onValueChanged.AddListener(OnMinAngleSliderValueChange);
             maxAngleSlider.onValueChanged.AddListener(OnMaxAngleSliderValueChange);
+            initialAngleSlider.onValueChanged.AddListener(OnInitialAngleSliderValueChange);
         }
 
         private void OnMinAngleSliderValueChange(float value)
@@ -60,6 +78,11 @@ namespace Client.Scripts
             MaxAngle = value * 360f;
         }
 
+        private void OnInitialAngleSliderValueChange(float value)
+        {
+            InitialAngle = value * 360f;
+        }
+
         public void Activate(RotaryJoint selectedRotaryJoint)
         {
             _selectedRotaryJoint = selectedRotaryJoint;
@@ -68,6 +91,7 @@ namespace Client.Scripts
 
             MinAngle = _selectedRotaryJoint.MinAngle;
             MaxAngle = _selectedRotaryJoint.MaxAngle;
+            InitialAngle = _selectedRotaryJoint.initialAngle;
 
             minAngleSlider.value = MinAngle / 360f;
             maxAngleSlider.value = MaxAngle / 360f;

@@ -80,6 +80,8 @@ namespace Client.Scripts.Robot
         public Tuple<GameObject, Transform> BuildRevoluteJoint(Item item, Transform parent)
         {
             var jointGo = Instantiate(revoluteJointPrefab, parent);
+            jointGo.transform.Rotate(0, item.RotationY, 0);
+            jointGo.GetComponent<RevoluteJoint>().Setup(item.MinAngle, item.MaxAngle, item.InitialAngle);
             return Tuple.Create(jointGo, parent);
         }
     }
