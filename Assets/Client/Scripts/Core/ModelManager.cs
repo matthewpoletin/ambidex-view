@@ -1,4 +1,5 @@
-﻿using Client.Scripts.Robot.Parts.Kinematics;
+﻿using Client.Scripts.Robot;
+using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Ui.Logging.View;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +25,23 @@ namespace Client.Scripts.Core
         private float _movementSpeed = 40f;
 
         private bool _simulationEnabled = false;
+
+        public bool SimulationEnabled
+        {
+            get => _simulationEnabled;
+            set
+            {
+                _simulationEnabled = value;
+                if (_simulationEnabled)
+                {
+                    PartSelection.Instance.UnselectObject();
+                }
+
+                UpdatePlayPauseImage();
+            }
+        }
+
+
         private bool _simulationComplete = true;
 
         public bool SimulationComplete
@@ -32,6 +50,7 @@ namespace Client.Scripts.Core
             set
             {
                 _simulationComplete = value;
+                restartButton.interactable = _simulationComplete;
                 if (_simulationComplete)
                 {
                     const string result = "successfully";
@@ -39,7 +58,6 @@ namespace Client.Scripts.Core
                 }
             }
         }
-
 
         private void Start()
         {
@@ -49,12 +67,14 @@ namespace Client.Scripts.Core
             nextButton.onClick.AddListener(OnNextButtonClick);
             playPauseButton.onClick.AddListener(OnPlayPauseButtonClick);
 
+            SimulationComplete = false;
+
             UpdatePlayPauseImage();
         }
 
         private void Update()
         {
-            if (_simulationEnabled)
+            if (SimulationEnabled)
             {
                 var rotaryJoints = FindObjectsOfType<RotaryJoint>();
                 foreach (var joint in rotaryJoints)
@@ -88,14 +108,14 @@ namespace Client.Scripts.Core
 
         public void OnRestartButtonClick()
         {
-            Debug.Log("Restart");
+            SimulationEnabled = false;
+            RobotController.Instance.Rebuild();
         }
 
         public void OnPreviousButtonClick()
         {
             Debug.Log("Previous");
         }
-
 
         public void OnNextButtonClick()
         {
@@ -104,9 +124,9 @@ namespace Client.Scripts.Core
 
         public void OnPlayPauseButtonClick()
         {
-            // Преключить состояние
-            _simulationEnabled = !_simulationEnabled;
-            // Сменить изображение
+            // Switch state
+            SimulationEnabled = !SimulationEnabled;
+            // Change button image
             UpdatePlayPauseImage();
         }
 
@@ -114,7 +134,7 @@ namespace Client.Scripts.Core
 
         public void UpdatePlayPauseImage()
         {
-            if (_simulationEnabled)
+            if (SimulationEnabled)
                 playPauseButtonImage.sprite = pauseSprite;
             else
                 playPauseButtonImage.sprite = playSprite;

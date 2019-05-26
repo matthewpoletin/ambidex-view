@@ -14,8 +14,22 @@ namespace Client.Scripts.Robot
         Rotary,
     }
 
-    public class Robot : MonoBehaviour
+    public class RobotController : MonoBehaviour
     {
+        #region Singleton
+
+        public static RobotController Instance { get; private set; } = null;
+
+        private void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+            else if (Instance != this)
+                Destroy(gameObject);
+        }
+
+        #endregion
+
         public Transform bodyRoot;
 
         public TextAsset configurationAsset;
@@ -32,6 +46,11 @@ namespace Client.Scripts.Robot
         }
 
         private Dictionary<GameObject, JointType> _jointData = new Dictionary<GameObject, JointType>();
+
+        public void Rebuild()
+        {
+            BuildFromTextAsset(configurationAsset);
+        }
 
         public void BuildFromTextAsset(TextAsset textAsset)
         {

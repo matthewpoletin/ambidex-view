@@ -30,6 +30,7 @@ namespace Client.Scripts.Ui.Editors
                 minAngleInputField.text = _minAngle.ToString(CultureInfo.CurrentCulture);
                 _angleSelectorController.MinAngle = _minAngle;
                 _selectedRotaryJoint.MinAngle = _minAngle;
+                minAngleSlider.value = _minAngle / 360f;
             }
         }
 
@@ -44,6 +45,7 @@ namespace Client.Scripts.Ui.Editors
                 maxAngleInputField.text = _maxAngle.ToString(CultureInfo.CurrentCulture);
                 _angleSelectorController.MaxAngle = _maxAngle;
                 _selectedRotaryJoint.MaxAngle = _maxAngle;
+                maxAngleSlider.value = _maxAngle / 360f;
             }
         }
 
@@ -58,6 +60,7 @@ namespace Client.Scripts.Ui.Editors
                 initialAngleInputField.text = _initialAngle.ToString(CultureInfo.CurrentCulture);
                 _angleSelectorController.InitialAngle = _initialAngle;
                 _selectedRotaryJoint.initialAngle = _initialAngle;
+                initialAngleSlider.value = _initialAngle/ 360f;
             }
         }
 

@@ -19,6 +19,20 @@ namespace Client.Scripts.Robot
 
     public class PartSelection : MonoBehaviour
     {
+        #region Singleton
+
+        public static PartSelection Instance { get; private set; } = null;
+
+        private void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+            else if (Instance != this)
+                Destroy(gameObject);
+        }
+
+        #endregion
+
         private Camera _camera;
         private CameraController _cameraController;
 
@@ -101,7 +115,7 @@ namespace Client.Scripts.Robot
         /// <summary>
         /// Remove selection of current active object
         /// </summary>
-        private void UnselectObject()
+        public void UnselectObject()
         {
             // Nothing was selected
             if (_selectedObject == null)
@@ -150,7 +164,7 @@ namespace Client.Scripts.Robot
         /// <summary>
         /// Set camera to default target
         /// </summary>
-        private void CameraOnDefault()
+        public void CameraOnDefault()
         {
             _cameraController.target = transform;
             _cameraController.useOffset = true;
