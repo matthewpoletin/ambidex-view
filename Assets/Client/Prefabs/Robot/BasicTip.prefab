@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 702823927065087531}
   - component: {fileID: 1472095085426944942}
   - component: {fileID: 8596956710268821537}
+  - component: {fileID: 8967122356818468784}
   m_Layer: 0
   m_Name: Tip
   m_TagString: Tip
@@ -62,6 +63,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8967122356818468784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702823927065087530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 232b5bcf6d4b426abec2e5c7fba88da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1903012382847949108
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,7 +132,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c2b62733b37324c38b66a241d4fe1b3e, type: 2}
+  - {fileID: 2100000, guid: 190cd0548fc1a2a408eaeeaa3c995061, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -229,7 +242,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c2b62733b37324c38b66a241d4fe1b3e, type: 2}
+  - {fileID: 2100000, guid: 190cd0548fc1a2a408eaeeaa3c995061, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -306,7 +319,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c2b62733b37324c38b66a241d4fe1b3e, type: 2}
+  - {fileID: 2100000, guid: 190cd0548fc1a2a408eaeeaa3c995061, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

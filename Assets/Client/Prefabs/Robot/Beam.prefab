@@ -57,7 +57,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6fc62b3641f9348eb8a7ec73544af0d0, type: 2}
+  - {fileID: 2100000, guid: ff91804bcc65e924884bfe9351e233bf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,6 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8606450809676423770}
   - component: {fileID: 8606450809676423769}
+  - component: {fileID: -5599724037863743952}
   m_Layer: 0
   m_Name: Beam
   m_TagString: Beam
@@ -124,6 +125,18 @@ CapsuleCollider:
   m_Height: 0.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &-5599724037863743952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8606450809676423771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4579a443a6d4526aba60565ac39c826, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8606450810703714191
 GameObject:
   m_ObjectHideFlags: 0

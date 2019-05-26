@@ -1,4 +1,4 @@
-﻿using Client.Scripts.Robot.Kinematics;
+﻿using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Ui.Logging.View;
 using UnityEngine;
 using UnityEngine.UI;

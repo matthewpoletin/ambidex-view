@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Client.Scripts.Robot.Kinematics;
+using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Service.Model;
 using UnityEngine;
 
@@ -48,20 +48,20 @@ namespace Client.Scripts.Robot
                 switch (item.Type)
                 {
                     case "Beam":
-                        nextParent = RobotFactory.Instance.BuildBeam(item, nextParent).Item2;
+                        nextParent = PartFactory.Instance.BuildBeam(item, nextParent).Item2;
                         break;
                     case "RotaryJoint":
-                        var rotaryJointGo = RobotFactory.Instance.BuildRotaryJoint(item, nextParent).Item1;
+                        var rotaryJointGo = PartFactory.Instance.BuildRotaryJoint(item, nextParent).Item1;
                         rotaryJointGo.GetComponent<RotaryJoint>().Setup(item);
                         _jointData.Add(rotaryJointGo, JointType.Rotary);
                         break;
                     case "RevoluteJoint":
-                        var revoluteJointGo = RobotFactory.Instance.BuildRevoluteJoint(item, nextParent).Item1;
+                        var revoluteJointGo = PartFactory.Instance.BuildRevoluteJoint(item, nextParent).Item1;
                         revoluteJointGo.GetComponent<RevoluteJoint>().Setup(item);
                         _jointData.Add(revoluteJointGo, JointType.Revolute);
                         break;
                     case "Tip":
-                        var tipGo = RobotFactory.Instance.BuildTip(item, nextParent);
+                        var tipGo = PartFactory.Instance.BuildTip(item, nextParent);
                         break;
                     default:
                         Debug.LogWarning($"Unrecognized item type {item.Type}");

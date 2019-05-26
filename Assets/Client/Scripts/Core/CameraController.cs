@@ -7,6 +7,7 @@ namespace Client.Scripts.Core
     {
         public Transform target;
         public Vector3 targetOffset;
+        public bool useOffset = true;
         public float distance = 5.0f;
         public float maxDistance = 20;
         public float minDistance = .6f;
@@ -90,7 +91,8 @@ namespace Client.Scripts.Core
             _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, Time.deltaTime * zoomDampening);
 
             // Подсчитвть позицию на основе нового значения currentDistance
-            _position = target.position - (_rotation * Vector3.forward * _currentDistance + targetOffset);
+            _position = target.position - (_rotation * Vector3.forward * _currentDistance +
+                                           (useOffset ? targetOffset : Vector3.zero));
             transform.position = _position;
         }
 

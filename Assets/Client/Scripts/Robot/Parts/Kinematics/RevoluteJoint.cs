@@ -2,9 +2,9 @@ using System;
 using Client.Scripts.Ui;
 using UnityEngine;
 
-namespace Client.Scripts.Robot.Kinematics
+namespace Client.Scripts.Robot.Parts.Kinematics
 {
-    public class RevoluteJoint : KinematicJoint
+    public class RevoluteJoint : KinematicJoint, ISelectablePart
     {
         public AngleSelectorController angleSelectorController;
 
@@ -78,7 +78,17 @@ namespace Client.Scripts.Robot.Kinematics
             base.Initialize(body1, body2);
 
             // Set initial angle
-            SetAngle(_item.InitialAngle);
+            SetAngle(Item.InitialAngle);
+        }
+
+        public void Select()
+        {
+            transform.Find("Mesh").GetComponent<MeshRenderer>().material.SetFloat("_IsEnabled", 1f);
+        }
+
+        public void Deselect()
+        {
+            transform.Find("Mesh").GetComponent<MeshRenderer>().material.SetFloat("_IsEnabled", 0f);
         }
     }
 }

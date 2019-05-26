@@ -1,4 +1,4 @@
-﻿using Client.Scripts.Robot.Kinematics;
+﻿using Client.Scripts.Robot.Parts.Kinematics;
 using UnityEngine;
 
 namespace Client.Scripts.Ui.Editors

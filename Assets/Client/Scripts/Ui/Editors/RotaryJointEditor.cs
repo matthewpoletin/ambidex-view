@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using Client.Scripts.Robot.Kinematics;
+using Client.Scripts.Robot.Parts.Kinematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -95,6 +95,7 @@ namespace Client.Scripts.Ui.Editors
 
             minAngleSlider.value = MinAngle / 360f;
             maxAngleSlider.value = MaxAngle / 360f;
+            initialAngleSlider.value = InitialAngle / 360f;
         }
 
         public void Deactivate()

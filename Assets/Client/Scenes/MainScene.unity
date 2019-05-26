@@ -313,7 +313,7 @@ PrefabInstance:
     - target: {fileID: 8947280950679066734, guid: def9486403a814e52871bd67792f5133,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.388
       objectReference: {fileID: 0}
     - target: {fileID: 8947280950679066734, guid: def9486403a814e52871bd67792f5133,
         type: 3}
@@ -510,11 +510,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beamPrefab: {fileID: 8606450809676423771, guid: fd7a7515adc36427ab48bdc96a331c08,
     type: 3}
+  tipPrefab: {fileID: 702823927065087530, guid: 2cc4b3a7cad7d4451b05f1ab826ba114,
+    type: 3}
   rotaryJointPrefab: {fileID: 3157649247122746965, guid: 3f78fa6ab7c784215acbdd42b4f2ba29,
     type: 3}
   revoluteJointPrefab: {fileID: 3157649247122746965, guid: c33d0d3ab11cd4d038ea6381b78157fe,
-    type: 3}
-  tipPrefab: {fileID: 702823927065087530, guid: 2cc4b3a7cad7d4451b05f1ab826ba114,
     type: 3}
 --- !u!114 &451935857 stripped
 MonoBehaviour:
@@ -675,7 +675,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh15534
+  m_Name: pb_Mesh15540
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1823,7 +1823,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033641854}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1993755449}
@@ -2766,7 +2766,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh15570
+  m_Name: pb_Mesh15576
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3021,6 +3021,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1993755449}
   targetOffset: {x: 0, y: -2, z: 0}
+  useOffset: 1
   distance: 5
   maxDistance: 20
   minDistance: 0.6

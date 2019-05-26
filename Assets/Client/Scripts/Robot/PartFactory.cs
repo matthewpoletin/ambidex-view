@@ -1,15 +1,15 @@
 using System;
-using Client.Scripts.Robot.Kinematics;
+using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Service.Model;
 using UnityEngine;
 
 namespace Client.Scripts.Robot
 {
-    public class RobotFactory : MonoBehaviour
+    public class PartFactory : MonoBehaviour
     {
         #region Singleton
 
-        public static RobotFactory Instance { get; private set; } = null;
+        public static PartFactory Instance { get; private set; } = null;
 
         private void Awake()
         {
@@ -28,10 +28,10 @@ namespace Client.Scripts.Robot
         [Header("Prefabs")]
         public GameObject beamPrefab;
 
+        public GameObject tipPrefab;
+
         public GameObject rotaryJointPrefab;
         public GameObject revoluteJointPrefab;
-
-        public GameObject tipPrefab;
 
         #endregion
 

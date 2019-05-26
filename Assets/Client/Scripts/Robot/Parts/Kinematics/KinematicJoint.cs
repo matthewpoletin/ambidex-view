@@ -1,12 +1,11 @@
 using Client.Scripts.Service.Model;
 using UnityEngine;
 
-namespace Client.Scripts.Robot.Kinematics
+namespace Client.Scripts.Robot.Parts.Kinematics
 {
-    [ExecuteInEditMode]
     public abstract class KinematicJoint : MonoBehaviour
     {
-        protected Item _item;
+        protected Item Item;
 
         public GameObject firstObject;
         public GameObject secondObject;
@@ -15,7 +14,7 @@ namespace Client.Scripts.Robot.Kinematics
 
         public void Setup(Item item)
         {
-            _item = item;
+            Item = item;
         }
         
         public void Initialize(Transform body1, Transform body2)

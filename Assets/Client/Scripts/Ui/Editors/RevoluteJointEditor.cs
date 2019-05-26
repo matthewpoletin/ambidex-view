@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using Client.Scripts.Robot.Kinematics;
+using Client.Scripts.Robot.Parts.Kinematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -91,10 +91,11 @@ namespace Client.Scripts.Ui.Editors
 
             MinAngle = _selectedRevoluteJoint.MinAngle;
             MaxAngle = _selectedRevoluteJoint.MaxAngle;
-            InitialAngle = _selectedRevoluteJoint.MaxAngle;
+            InitialAngle = _selectedRevoluteJoint.initialAngle;
 
             minAngleSlider.value = MinAngle / 360f;
             maxAngleSlider.value = MaxAngle / 360f;
+            initialAngleSlider.value = InitialAngle / 360f;
         }
 
         public void Deactivate()

@@ -1,4 +1,4 @@
-namespace Client.Scripts.Robot.Kinematics
+namespace Client.Scripts.Robot.Parts.Kinematics
 {
     public class BallJoint : KinematicJoint
     {
