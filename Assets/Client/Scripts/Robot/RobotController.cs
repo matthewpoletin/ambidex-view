@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Service.Model;
 using UnityEngine;
@@ -32,11 +33,13 @@ namespace Client.Scripts.Robot
 
         public Transform bodyRoot;
 
-        public TextAsset configurationAsset;
+//        public TextAsset configurationAsset;
+
+//        public string LoadedFile File;
 
         private void Start()
         {
-            BuildFromTextAsset(configurationAsset);
+//            BuildFromTextAsset(configurationAsset);
         }
 
         private void ClearRoot()
@@ -49,14 +52,37 @@ namespace Client.Scripts.Robot
 
         public void Rebuild()
         {
-            BuildFromTextAsset(configurationAsset);
+//            BuildFromTextAsset(configurationAsset);
         }
 
-        public void BuildFromTextAsset(TextAsset textAsset)
+        /// <summary>
+        /// Build robot from json configuration file
+        /// </summary>
+        /// <param name="fileName">Design file</param>
+        /// <returns>Build result</returns>
+        public bool BuildFromFile(string fileName)
+        {
+            if (!File.Exists(fileName))
+                return false;
+
+            BuildFromText(File.ReadAllText(fileName));
+
+            return true;
+        }
+
+        public bool BuildFromTextAsset(TextAsset textAsset)
+        {
+            var fileString = textAsset.text;
+
+            BuildFromText(fileString);
+
+            return true;
+        }
+
+        public void BuildFromText(string fileString)
         {
             ClearRoot();
 
-            var fileString = textAsset.text;
             var data = JsonUtility.FromJson<RobotConfiguration>(fileString);
 
             var nextParent = bodyRoot;

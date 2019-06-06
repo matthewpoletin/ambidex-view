@@ -1,4 +1,9 @@
-﻿using Client.Scripts.Robot.Parts.Kinematics;
+﻿using System;
+using System.IO;
+using System.Linq;
+using Client.Scripts.Robot.Parts.Kinematics;
+using Client.Scripts.Ui.DesignBrowser.Model;
+using Client.Scripts.Ui.DesignBrowser.View;
 using UnityEngine;
 
 namespace Client.Scripts.Ui.Editors
@@ -7,7 +12,7 @@ namespace Client.Scripts.Ui.Editors
     {
         #region Singleton
 
-        public static InfoPanelController Instance { get; private set; } = null;
+        public static InfoPanelController Instance { get; private set; }
 
         private void Awake()
         {
@@ -28,13 +33,12 @@ namespace Client.Scripts.Ui.Editors
 
         public RotaryJointEditor rotaryJointEditor;
         public RevoluteJointEditor revoluteJointEditor;
+        public DesignBrowserUiController designBrowser;
 
         private void HideAll()
         {
             foreach (Transform child in contentHolder)
-            {
                 child.gameObject.SetActive(false);
-            }
         }
 
         public void ShowRotaryJointEditor(RotaryJoint rotaryJoint)
@@ -63,6 +67,30 @@ namespace Client.Scripts.Ui.Editors
         {
             revoluteJointEditor.Deactivate();
             HideAll();
+        }
+
+        public void ShowDesignBrowser()
+        {
+            HideAll();
+
+            designBrowser.gameObject.SetActive(true);
+
+            var data = Directory
+                .EnumerateFiles(Path.Combine(Application.dataPath, "Client", "Configurations"), "*.json")
+                .Select(fileName => new DesignData
+                {
+                    CreateDate = DateTime.Now,
+                    Name = Path.GetFileName(fileName),
+                    FileName = fileName,
+//                    PreviewImage = 
+                });
+            designBrowser.Refill(data);
+        }
+
+        public void HideDesignBrowser()
+        {
+//            Design
+            designBrowser.gameObject.SetActive(false);
         }
     }
 }

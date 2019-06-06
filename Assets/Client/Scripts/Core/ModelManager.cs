@@ -1,11 +1,24 @@
 ﻿using Client.Scripts.Robot;
 using Client.Scripts.Robot.Parts.Kinematics;
+using Client.Scripts.Ui.Editors;
 using Client.Scripts.Ui.Logging.View;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Client.Scripts.Core
 {
+    /// <summary>
+    /// ?
+    /// </summary>
+    public enum ApplicationMode
+    {
+        // ?
+        Construction,
+
+        // Application is simulating design
+        Simulation,
+    }
+
     public class ModelManager : MonoBehaviour
     {
         #region Singleton
@@ -41,7 +54,6 @@ namespace Client.Scripts.Core
             }
         }
 
-
         private bool _simulationComplete = true;
 
         public bool SimulationComplete
@@ -62,7 +74,7 @@ namespace Client.Scripts.Core
         private void Start()
         {
             restartButton.onClick.AddListener(OnRestartButtonClick);
-            playlistButton.onClick.AddListener(OnPlaylistButtonClick);
+            designsButton.onClick.AddListener(OnDesignsButtonClick);
             previousButton.onClick.AddListener(OnPreviousButtonClick);
             nextButton.onClick.AddListener(OnNextButtonClick);
             playPauseButton.onClick.AddListener(OnPlayPauseButtonClick);
@@ -94,16 +106,16 @@ namespace Client.Scripts.Core
         public Sprite pauseSprite;
 
         [Header("Buttons")]
-        public Button playlistButton;
+        public Button designsButton;
 
         public Button restartButton;
         public Button previousButton;
         public Button nextButton;
         public Button playPauseButton;
 
-        private void OnPlaylistButtonClick()
+        private void OnDesignsButtonClick()
         {
-            // if ()
+            InfoPanelController.Instance.ShowDesignBrowser();
         }
 
         public void OnRestartButtonClick()
@@ -138,6 +150,11 @@ namespace Client.Scripts.Core
                 playPauseButtonImage.sprite = pauseSprite;
             else
                 playPauseButtonImage.sprite = playSprite;
+        }
+
+        public void LoadDesign(string fileName)
+        {
+            RobotController.Instance.BuildFromFile(fileName);
         }
     }
 }
