@@ -6,10 +6,6 @@ namespace Client.Scripts.Service.Model
     [Serializable]
     public class RobotConfiguration
     {
-        public string Name;
-        public string Description;
-        public string Author;
-        public string CreateDate;
         public bool Modeled;
         public List<Item> Items;
     }

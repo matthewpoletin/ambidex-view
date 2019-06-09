@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Client.Scripts.Core;
 using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Service.Model;
 using UnityEngine;
@@ -33,26 +34,29 @@ namespace Client.Scripts.Robot
 
         public Transform bodyRoot;
 
-//        public TextAsset configurationAsset;
+        private readonly Dictionary<GameObject, JointType> _jointData = new Dictionary<GameObject, JointType>();
 
-//        public string LoadedFile File;
+        private string _lastFileName = null;
 
-        private void Start()
-        {
-//            BuildFromTextAsset(configurationAsset);
-        }
-
-        private void ClearRoot()
+        public void ClearRoot()
         {
             foreach (Transform child in bodyRoot)
                 Destroy(child.gameObject);
+            _jointData.Clear();
         }
-
-        private Dictionary<GameObject, JointType> _jointData = new Dictionary<GameObject, JointType>();
 
         public void Rebuild()
         {
-//            BuildFromTextAsset(configurationAsset);
+            if (_lastFileName == null)
+                return;
+
+            BuildFromFile(_lastFileName);
+        }
+
+        public void Unload()
+        {
+            _lastFileName = null;
+            ClearRoot();
         }
 
         /// <summary>
@@ -70,25 +74,16 @@ namespace Client.Scripts.Robot
             return true;
         }
 
-        public bool BuildFromTextAsset(TextAsset textAsset)
-        {
-            var fileString = textAsset.text;
-
-            BuildFromText(fileString);
-
-            return true;
-        }
-
         public void BuildFromText(string fileString)
         {
             ClearRoot();
 
-            var data = JsonUtility.FromJson<RobotConfiguration>(fileString);
+            var data = JsonUtility.FromJson<Design>(fileString);
 
             var nextParent = bodyRoot;
-            for (var i = 0; i < data.Items.Count; i++)
+            for (var i = 0; i < data.RobotConfiguration.Items.Count; i++)
             {
-                var item = data.Items[i];
+                var item = data.RobotConfiguration.Items[i];
 
                 switch (item.Type)
                 {
@@ -133,6 +128,9 @@ namespace Client.Scripts.Robot
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            // Load waypoint data
+            WaypointManager.Instance.Load(data.WaypointPath.Waypoints);
         }
     }
 }

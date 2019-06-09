@@ -3,58 +3,85 @@
   "Description": "Test Robot Manipulator configuration",
   "Author": "Matthew Poletin",
   "CreateDate": "",
-  "Modeled": false,
-  "Items": [
-    {
-      "Type": "RevoluteJoint",
-      "Subtype": "",
-      "Length": 1,
-      "RotationY": 90,
-      "InitialAngle": 180,
-      "MinAngle": 90,
-      "MaxAngle": 270
-    },
-    {
-      "Type": "Beam",
-      "Subtype": "",
-      "Length": 1,
-      "Diameter": 1
-    },
-    {
-      "Type": "RotaryJoint",
-      "Subtype": "",
-      "Length": 1,
-      "RotationY": 90,
-      "InitialAngle": 180,
-      "MinAngle": 90,
-      "MaxAngle": 270
-    },
-    {
-      "Type": "Beam",
-      "Subtype": "",
-      "Length": 1,
-      "Diameter": 1
-    },
-    {
-      "Type": "RotaryJoint",
-      "Subtype": "",
-      "Length": 1,
-      "RotationY": 0,
-      "InitialAngle": 180,
-      "MinAngle": 90,
-      "MaxAngle": 270
-    },
-    {
-      "Type": "Beam",
-      "Subtype": "",
-      "Length": 1,
-      "Diameter": 1
-    },
-    {
-      "Type": "Tip",
-      "Subtype": "",
-      "Length": 1,
-      "Diameter": 1
-    }
-  ]
+  "RobotConfiguration": {
+    "Modeled": false,
+    "Items": [
+      {
+        "Type": "RevoluteJoint",
+        "Subtype": "",
+        "Length": 1,
+        "RotationY": 90,
+        "InitialAngle": 180,
+        "MinAngle": 90,
+        "MaxAngle": 270
+      },
+      {
+        "Type": "Beam",
+        "Subtype": "",
+        "Length": 1,
+        "Diameter": 1
+      },
+      {
+        "Type": "RotaryJoint",
+        "Subtype": "",
+        "Length": 1,
+        "RotationY": 90,
+        "InitialAngle": 180,
+        "MinAngle": 90,
+        "MaxAngle": 270
+      },
+      {
+        "Type": "Beam",
+        "Subtype": "",
+        "Length": 1,
+        "Diameter": 1
+      },
+      {
+        "Type": "RotaryJoint",
+        "Subtype": "",
+        "Length": 1,
+        "RotationY": 0,
+        "InitialAngle": 180,
+        "MinAngle": 90,
+        "MaxAngle": 270
+      },
+      {
+        "Type": "Beam",
+        "Subtype": "",
+        "Length": 1,
+        "Diameter": 1
+      },
+      {
+        "Type": "Tip",
+        "Subtype": "",
+        "Length": 1,
+        "Diameter": 1
+      }
+    ]
+  },
+  "WaypointPath": {
+    "Waypoints": [
+      {
+        "Position": {
+          "X": 0.6,
+          "Y": 2.7,
+          "Z": 0.4
+        }
+      },
+      {
+        "Position": {
+          "X": 1.1,
+          "Y": 2.0,
+          "Z": 0.5
+        }
+      },
+      {
+        "Position": {
+          "X": 1,
+          "Y": 1,
+          "Z": 1
+        }
+      }
+    ]
+  }
 }

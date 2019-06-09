@@ -12,14 +12,19 @@ namespace Client.Scripts.Ui.DesignBrowser.View
 
         public void Refill(IEnumerable<DesignData> data)
         {
-            foreach (Transform child in designHolder)
-                Destroy(child.gameObject);
+            Deactivate();
 
             foreach (var dataItem in data)
             {
                 var design = Instantiate(designPrefab, designHolder);
                 design.GetComponent<DesignUiController>().Initialize(dataItem);
             }
+        }
+
+        public void Deactivate()
+        {
+            foreach (Transform child in designHolder)
+                Destroy(child.gameObject);
         }
     }
 }

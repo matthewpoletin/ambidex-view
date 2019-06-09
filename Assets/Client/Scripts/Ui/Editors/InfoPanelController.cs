@@ -35,7 +35,7 @@ namespace Client.Scripts.Ui.Editors
         public RevoluteJointEditor revoluteJointEditor;
         public DesignBrowserUiController designBrowser;
 
-        private void HideAll()
+        public void HideAll()
         {
             foreach (Transform child in contentHolder)
                 child.gameObject.SetActive(false);
@@ -69,6 +69,14 @@ namespace Client.Scripts.Ui.Editors
             HideAll();
         }
 
+        public void ToggleDesignBrowser()
+        {
+            if (!designBrowser.gameObject.activeSelf)
+                ShowDesignBrowser();
+            else
+                HideDesignBrowser();
+        }
+
         public void ShowDesignBrowser()
         {
             HideAll();
@@ -89,7 +97,7 @@ namespace Client.Scripts.Ui.Editors
 
         public void HideDesignBrowser()
         {
-//            Design
+            designBrowser.Deactivate();
             designBrowser.gameObject.SetActive(false);
         }
     }

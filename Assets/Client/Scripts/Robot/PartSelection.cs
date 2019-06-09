@@ -50,6 +50,9 @@ namespace Client.Scripts.Robot
 
         private void Update()
         {
+            if (ModelManager.Instance.Mode != ApplicationMode.Construction)
+                return;
+
             if (Input.GetMouseButtonDown(0))
             {
                 // Check if the mouse was clicked over a UI element
