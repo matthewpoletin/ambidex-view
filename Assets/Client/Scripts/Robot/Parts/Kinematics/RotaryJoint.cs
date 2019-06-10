@@ -1,11 +1,16 @@
 ﻿using System;
+using Client.Scripts.Service.Model;
 using Client.Scripts.Ui;
 using UnityEngine;
 
 namespace Client.Scripts.Robot.Parts.Kinematics
 {
-    public class RotaryJoint : KinematicJoint, ISelectablePart
+    public class RotaryJoint : KinematicJoint, IPart
     {
+        private Guid _id;
+
+        private float _rotationY;
+
         public AngleSelectorController angleSelectorController;
 
         public float initialAngle = 180.0f;
@@ -68,6 +73,7 @@ namespace Client.Scripts.Robot.Parts.Kinematics
         /// </summary>
         public void SetAngle(float desiredAngle)
         {
+            desiredAngle = Mathf.Clamp(desiredAngle, _minAngle, _maxAngle);
             secondObject.transform.RotateAround(firstObject.transform.position, transform.right,
                 desiredAngle - _currentAngle);
             _currentAngle = desiredAngle;
@@ -78,7 +84,7 @@ namespace Client.Scripts.Robot.Parts.Kinematics
             base.Initialize(body1, body2);
 
             // Set initial angle
-            SetAngle(Item.InitialAngle);
+            SetAngle(PartData.InitialAngle);
         }
 
         public void Select()
@@ -89,6 +95,28 @@ namespace Client.Scripts.Robot.Parts.Kinematics
         public void Deselect()
         {
             transform.Find("Mesh").GetComponent<MeshRenderer>().material.SetFloat("_IsEnabled", 0f);
+        }
+
+        public void Deserialize(PartData data)
+        {
+            _id = data.Id;
+            _rotationY = data.RotationY;
+            MaxAngle = data.MinAngle;
+            MinAngle = data.MaxAngle;
+            initialAngle = data.InitialAngle;
+        }
+
+        public PartData Serialize()
+        {
+            return new PartData
+            {
+                Id = _id,
+                Type = "RotaryJoint",
+                RotationY = _rotationY,
+                MinAngle = _minAngle,
+                MaxAngle = _maxAngle,
+                InitialAngle = initialAngle,
+            };
         }
     }
 }

@@ -1,17 +1,23 @@
 using System;
+using Client.Scripts.Service.Model;
 using Client.Scripts.Ui;
 using UnityEngine;
 
 namespace Client.Scripts.Robot.Parts.Kinematics
 {
-    public class RevoluteJoint : KinematicJoint, ISelectablePart
+    public class RevoluteJoint : KinematicJoint, IPart
     {
+        private Guid _id;
+
+        private float _rotationY;
+
         public AngleSelectorController angleSelectorController;
 
         public float initialAngle = 180.0f;
         private float _currentAngle;
 
         private float _minAngle;
+
 
         public float MinAngle
         {
@@ -78,7 +84,7 @@ namespace Client.Scripts.Robot.Parts.Kinematics
             base.Initialize(body1, body2);
 
             // Set initial angle
-            SetAngle(Item.InitialAngle);
+            SetAngle(PartData.InitialAngle);
         }
 
         public void Select()
@@ -89,6 +95,29 @@ namespace Client.Scripts.Robot.Parts.Kinematics
         public void Deselect()
         {
             transform.Find("Mesh").GetComponent<MeshRenderer>().material.SetFloat("_IsEnabled", 0f);
+        }
+
+        public void Deserialize(PartData data)
+        {
+            _id = data.Id;
+            // TODO: Rotate
+//            _rotationY = data.RotationY;
+            _minAngle = data.MinAngle;
+            _maxAngle = data.MaxAngle;
+            initialAngle = data.InitialAngle;
+        }
+
+        public PartData Serialize()
+        {
+            return new PartData
+            {
+                Id = _id,
+                Type = "RevoluteJoint",
+                RotationY = _rotationY,
+                MinAngle = _minAngle,
+                MaxAngle = _maxAngle,
+                InitialAngle = initialAngle,
+            };
         }
     }
 }

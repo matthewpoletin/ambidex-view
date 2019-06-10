@@ -35,7 +35,7 @@ namespace Client.Scripts.Robot
 
         #endregion
 
-        public Tuple<GameObject, Transform> BuildBeam(Item item, Transform parent)
+        public Tuple<GameObject, Transform> BuildBeam(PartData partData, Transform parent)
         {
             // Create object
             var beamGo = Instantiate(beamPrefab, parent);
@@ -52,7 +52,7 @@ namespace Client.Scripts.Robot
             }
 
             // Set size
-            var newScale = new Vector3(1, item.Length / _resultingScale.y, 1);
+            var newScale = new Vector3(1, partData.Length / _resultingScale.y, 1);
             beamGo.transform.localScale = newScale;
             _resultingScale = new Vector3(
                 newScale.x * _resultingScale.x,
@@ -63,25 +63,25 @@ namespace Client.Scripts.Robot
             return Tuple.Create(beamGo, nextParent);
         }
 
-        public GameObject BuildTip(Item item, Transform parent)
+        public GameObject BuildTip(PartData partData, Transform parent)
         {
             var tipGo = Instantiate(tipPrefab, parent);
             return tipGo;
         }
 
-        public Tuple<GameObject, Transform> BuildRotaryJoint(Item item, Transform parent)
+        public Tuple<GameObject, Transform> BuildRotaryJoint(PartData partData, Transform parent)
         {
             var jointGo = Instantiate(rotaryJointPrefab, parent);
-            jointGo.transform.Rotate(0, item.RotationY, 0);
-            jointGo.GetComponent<RotaryJoint>().Setup(item.MinAngle, item.MaxAngle, item.InitialAngle);
+            jointGo.transform.Rotate(0, partData.RotationY, 0);
+            jointGo.GetComponent<RotaryJoint>().Setup(partData.MinAngle, partData.MaxAngle, partData.InitialAngle);
             return Tuple.Create(jointGo, parent);
         }
 
-        public Tuple<GameObject, Transform> BuildRevoluteJoint(Item item, Transform parent)
+        public Tuple<GameObject, Transform> BuildRevoluteJoint(PartData partData, Transform parent)
         {
             var jointGo = Instantiate(revoluteJointPrefab, parent);
-            jointGo.transform.Rotate(0, item.RotationY, 0);
-            jointGo.GetComponent<RevoluteJoint>().Setup(item.MinAngle, item.MaxAngle, item.InitialAngle);
+            jointGo.transform.Rotate(0, partData.RotationY, 0);
+            jointGo.GetComponent<RevoluteJoint>().Setup(partData.MinAngle, partData.MaxAngle, partData.InitialAngle);
             return Tuple.Create(jointGo, parent);
         }
     }

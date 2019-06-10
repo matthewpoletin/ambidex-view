@@ -499,3 +499,6 @@ sysinfo.txt
 
 # Never ignore Unity packages
 ![Pp]ackages/manifest.json
+
+# NuGet packages
+/Assets/Packages*

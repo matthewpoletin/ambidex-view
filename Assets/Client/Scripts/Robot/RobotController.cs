@@ -4,16 +4,25 @@ using System.IO;
 using Client.Scripts.Core;
 using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Service.Model;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Client.Scripts.Robot
 {
-    public enum JointType
+    public class ItemData
+    {
+        public ItemType Type;
+        public GameObject GameObject;
+    }
+
+    public enum ItemType
     {
         Undefined = 0,
 
-        Revolute,
-        Rotary,
+        RevoluteJoint,
+        RotaryJoint,
+        Beam,
+        BasicTip,
     }
 
     public class RobotController : MonoBehaviour
@@ -34,7 +43,8 @@ namespace Client.Scripts.Robot
 
         public Transform bodyRoot;
 
-        private readonly Dictionary<GameObject, JointType> _jointData = new Dictionary<GameObject, JointType>();
+        public readonly Dictionary<Guid, ItemData> ItemData =
+            new Dictionary<Guid, ItemData>();
 
         private string _lastFileName = null;
 
@@ -42,7 +52,7 @@ namespace Client.Scripts.Robot
         {
             foreach (Transform child in bodyRoot)
                 Destroy(child.gameObject);
-            _jointData.Clear();
+            ItemData.Clear();
         }
 
         public void Rebuild()
@@ -78,7 +88,7 @@ namespace Client.Scripts.Robot
         {
             ClearRoot();
 
-            var data = JsonUtility.FromJson<Design>(fileString);
+            var data = JsonConvert.DeserializeObject<Design>(fileString);
 
             var nextParent = bodyRoot;
             for (var i = 0; i < data.RobotConfiguration.Items.Count; i++)
@@ -93,12 +103,12 @@ namespace Client.Scripts.Robot
                     case "RotaryJoint":
                         var rotaryJointGo = PartFactory.Instance.BuildRotaryJoint(item, nextParent).Item1;
                         rotaryJointGo.GetComponent<RotaryJoint>().Setup(item);
-                        _jointData.Add(rotaryJointGo, JointType.Rotary);
+                        AddItem(item.Id, ItemType.RotaryJoint, rotaryJointGo);
                         break;
                     case "RevoluteJoint":
                         var revoluteJointGo = PartFactory.Instance.BuildRevoluteJoint(item, nextParent).Item1;
                         revoluteJointGo.GetComponent<RevoluteJoint>().Setup(item);
-                        _jointData.Add(revoluteJointGo, JointType.Revolute);
+                        AddItem(item.Id, ItemType.RevoluteJoint, revoluteJointGo);
                         break;
                     case "Tip":
                         var tipGo = PartFactory.Instance.BuildTip(item, nextParent);
@@ -109,21 +119,22 @@ namespace Client.Scripts.Robot
                 }
             }
 
-            foreach (var jointDataItem in _jointData)
+            // Initialize joints
+            foreach (var jointDataItem in ItemData)
             {
-                var jointGo = jointDataItem.Key;
-                var type = jointDataItem.Value;
+                var jointGo = jointDataItem.Value.GameObject;
+                var type = jointDataItem.Value.Type;
                 var body1 = jointGo.transform.parent;
                 var body2 = jointGo.transform.parent.GetChild(jointGo.transform.GetSiblingIndex() + 1);
                 switch (type)
                 {
-                    case JointType.Revolute:
+                    case ItemType.RevoluteJoint:
                         jointGo.GetComponent<RevoluteJoint>().Initialize(body1, body2);
                         break;
-                    case JointType.Rotary:
+                    case ItemType.RotaryJoint:
                         jointGo.GetComponent<RotaryJoint>().Initialize(body1, body2);
                         break;
-                    case JointType.Undefined:
+                    case ItemType.Undefined:
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -131,6 +142,30 @@ namespace Client.Scripts.Robot
 
             // Load waypoint data
             WaypointManager.Instance.Load(data.WaypointPath.Waypoints);
+        }
+
+        private void AddItem(Guid id, ItemType type, GameObject go)
+        {
+            ItemData.Add(id, new ItemData {GameObject = go, Type = type});
+        }
+
+        public ItemData GetItemById(Guid id)
+        {
+            return ItemData.ContainsKey(id) ? ItemData[id] : null;
+        }
+
+        public GameObject GetObjectById(Guid id)
+        {
+            return GetItemById(id).GameObject;
+        }
+
+        public List<Tuple<Guid, GameObject>> GetAllObjectsByType(ItemType type)
+        {
+            var result = new List<Tuple<Guid, GameObject>>();
+            foreach (var item in ItemData)
+                if (item.Value.Type == type)
+                    result.Add(Tuple.Create(item.Key, item.Value.GameObject));
+            return result;
         }
     }
 }

@@ -1,25 +1,29 @@
-using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Client.Scripts.Service.Model
 {
-    [Serializable]
-    public struct Position
+    public class Position
     {
-        public float X;
-        public float Y;
-        public float Z;
+        [JsonProperty("x", Required = Required.Always)]
+        public float X { get; set; }
+
+        [JsonProperty("y", Required = Required.Always)]
+        public float Y { get; set; }
+
+        [JsonProperty("z", Required = Required.Always)]
+        public float Z { get; set; }
     }
 
-    [Serializable]
     public class WaypointData
     {
-        public Position Position;
+        [JsonProperty("position", Required = Required.Always)]
+        public Position Position { get; set; }
     }
 
-    [Serializable]
     public class WaypointPath
     {
-        public List<WaypointData> Waypoints;
+        [JsonProperty("waypoints", Required = Required.Always)]
+        public List<WaypointData> Waypoints { get; set; }
     }
 }

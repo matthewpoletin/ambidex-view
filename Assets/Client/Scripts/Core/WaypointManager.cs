@@ -58,7 +58,7 @@ namespace Client.Scripts.Core
         {
             if (waypoints == null)
                 return false;
-            
+
             ClearRoot();
             Populate(waypoints);
             return true;
@@ -73,15 +73,6 @@ namespace Client.Scripts.Core
         {
             _lastLoadedData = null;
             ClearRoot();
-        }
-
-        private void Update()
-        {
-            if (waypointsHolder.childCount == 0)
-            {
-                ModelManager.Instance.SimulationComplete = true;
-                Destroy(this);
-            }
         }
     }
 }

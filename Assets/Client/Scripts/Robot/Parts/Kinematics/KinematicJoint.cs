@@ -5,16 +5,16 @@ namespace Client.Scripts.Robot.Parts.Kinematics
 {
     public abstract class KinematicJoint : MonoBehaviour
     {
-        protected Item Item;
+        protected PartData PartData;
 
         public GameObject firstObject;
         public GameObject secondObject;
 
         protected abstract void Init();
 
-        public void Setup(Item item)
+        public void Setup(PartData partData)
         {
-            Item = item;
+            PartData = partData;
         }
         
         public void Initialize(Transform body1, Transform body2)

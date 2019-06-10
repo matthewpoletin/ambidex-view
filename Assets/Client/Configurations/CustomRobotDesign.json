@@ -1,85 +1,85 @@
 {
-  "Name": "Custom robot configuration",
-  "Description": "Test Robot Manipulator configuration",
-  "Author": "Matthew Poletin",
-  "CreateDate": "",
-  "RobotConfiguration": {
-    "Modeled": false,
-    "Items": [
+  "name": "Custom robot configuration",
+  "description": "Test Robot Manipulator configuration",
+  "author": "Matthew Poletin",
+  "createDate": "6/10/2019 11:44:34 AM",
+  "robotConfiguration": {
+    "modeled": false,
+    "items": [
       {
-        "Type": "RevoluteJoint",
-        "Subtype": "",
-        "Length": 1,
-        "RotationY": 90,
-        "InitialAngle": 180,
-        "MinAngle": 90,
-        "MaxAngle": 270
+        "id": "997dcd45-a9a7-4b49-a847-40a59bd1997d",
+        "type": "RevoluteJoint",
+        "length": 1,
+        "rotationY": 90,
+        "initialAngle": 180,
+        "minAngle": 90,
+        "maxAngle": 270
       },
       {
-        "Type": "Beam",
-        "Subtype": "",
-        "Length": 1,
-        "Diameter": 1
+        "id": "cb311195-9cdf-4b7e-a1b1-af42f19301ea",
+        "type": "Beam",
+        "length": 1,
+        "diameter": 1
       },
       {
-        "Type": "RotaryJoint",
-        "Subtype": "",
-        "Length": 1,
-        "RotationY": 90,
-        "InitialAngle": 180,
-        "MinAngle": 90,
-        "MaxAngle": 270
+        "id": "46d39d18-f342-44ad-9aff-44bcb7a2591f",
+        "type": "RotaryJoint",
+        "length": 1,
+        "rotationY": 90,
+        "initialAngle": 180,
+        "minAngle": 90,
+        "maxAngle": 270
       },
       {
-        "Type": "Beam",
-        "Subtype": "",
-        "Length": 1,
-        "Diameter": 1
+        "id": "ecc0055b-ac52-4f68-b709-96cadf993c40",
+        "type": "Beam",
+        "length": 1,
+        "diameter": 1
       },
       {
-        "Type": "RotaryJoint",
-        "Subtype": "",
-        "Length": 1,
-        "RotationY": 0,
-        "InitialAngle": 180,
-        "MinAngle": 90,
-        "MaxAngle": 270
+        "id": "9a5e71f4-35fa-43aa-9318-1a7a04f0eec0",
+        "type": "RotaryJoint",
+        "length": 1,
+        "rotationY": 0,
+        "initialAngle": 180,
+        "minAngle": 90,
+        "maxAngle": 270
       },
       {
-        "Type": "Beam",
-        "Subtype": "",
-        "Length": 1,
-        "Diameter": 1
+        "id": "b3274745-54e8-40ae-8b2f-bf79c72266fa",
+        "type": "Beam",
+        "length": 1,
+        "diameter": 1
       },
       {
-        "Type": "Tip",
-        "Subtype": "",
-        "Length": 1,
-        "Diameter": 1
+        "id": "4d14f339-0c71-4bb2-a1c3-f89ade8b05da",
+        "type": "Tip",
+        "length": 1,
+        "diameter": 1
       }
     ]
   },
-  "WaypointPath": {
-    "Waypoints": [
+  "waypointPath": {
+    "waypoints": [
       {
-        "Position": {
-          "X": 0.6,
-          "Y": 2.7,
-          "Z": 0.4
+        "position": {
+          "x": 0.6,
+          "y": 2.7,
+          "z": 0.4
         }
       },
       {
-        "Position": {
-          "X": 1.1,
-          "Y": 2.0,
-          "Z": 0.5
+        "position": {
+          "x": 1.1,
+          "y": 2.0,
+          "z": 0.5
         }
       },
       {
-        "Position": {
-          "X": 1,
-          "Y": 1,
-          "Z": 1
+        "position": {
+          "x": 1,
+          "y": 1,
+          "z": 1
         }
       }
     ]

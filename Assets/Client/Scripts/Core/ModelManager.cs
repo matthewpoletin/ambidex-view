@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Client.Scripts.Robot;
 using Client.Scripts.Robot.Parts.Kinematics;
+using Client.Scripts.Service;
+using Client.Scripts.Service.Model;
 using Client.Scripts.Ui.Editors;
 using Client.Scripts.Ui.Logging.View;
 using UnityEngine;
@@ -69,11 +72,41 @@ namespace Client.Scripts.Core
                 waypointsButton.interactable = value != ApplicationMode.Waypoints;
                 simulateButton.interactable = value != ApplicationMode.Simulation;
 
+                switch (value)
+                {
+                    case ApplicationMode.Unloaded:
+                        modeHolder.SetActive(false);
+                        modeText.text = "";
+                        modeBackground.color = Color.white;
+                        break;
+                    case ApplicationMode.Construction:
+                        modeHolder.SetActive(true);
+                        modeText.text = "Construction";
+                        modeBackground.color = constructionModeColor;
+                        break;
+                    case ApplicationMode.Waypoints:
+                        modeHolder.SetActive(true);
+                        modeText.text = "Waypoints";
+                        modeBackground.color = waypointsModeColor;
+                        break;
+                    case ApplicationMode.Simulation:
+                        modeHolder.SetActive(true);
+                        modeText.text = "Simulation";
+                        modeBackground.color = simulationModeColor;
+                        break;
+                }
+
                 _mode = value;
             }
         }
 
         private float _movementSpeed = 40f;
+
+        [HideInInspector]
+        public Queue<SimulationStep> simulationProcess = null;
+
+        // Simulation is loaded
+        private bool SimulationLoaded => simulationProcess != null;
 
         private bool _simulationEnabled = false;
 
@@ -99,11 +132,18 @@ namespace Client.Scripts.Core
             }
         }
 
-        private bool _simulationComplete = true;
+        // Simulation is over (timeout or all steps done)
+        private bool _simulationComplete = false;
 
         public bool SimulationComplete
         {
-            get => _simulationComplete;
+            get
+            {
+                if (simulationProcess.Count == 0)
+                    _simulationComplete = true;
+
+                return _simulationComplete;
+            }
             set
             {
                 _simulationComplete = value;
@@ -137,17 +177,30 @@ namespace Client.Scripts.Core
 
         private void Update()
         {
-            if (SimulationEnabled)
+            // We run simulation, itf is loaded and not over yet
+            if (SimulationEnabled && SimulationLoaded && !SimulationComplete)
             {
-                var rotaryJoints = FindObjectsOfType<RotaryJoint>();
-                foreach (var joint in rotaryJoints)
+                var step = simulationProcess.Dequeue();
+                foreach (var item in step.items)
                 {
-                    joint.ChangeAngle(_movementSpeed * Time.deltaTime);
+                    var itemData = RobotController.Instance.GetItemById(item.itemId);
+                    if (itemData == null)
+                    {
+                        Debug.LogWarning($"Item {item.itemId} not found");
+                        continue;
+                    }
+
+                    switch (itemData.Type)
+                    {
+                        case ItemType.RotaryJoint:
+                            itemData.GameObject.GetComponent<RotaryJoint>().SetAngle(item.angle);
+                            break;
+                    }
                 }
             }
         }
 
-        #region Buttons
+        #region Interface
 
         [Space]
         [SerializeField]
@@ -209,6 +262,10 @@ namespace Client.Scripts.Core
             SimulationEnabled = !SimulationEnabled;
             // Change button image
             UpdatePlayPauseImage();
+
+            // We need to run simulation and it's not loaded
+            if (SimulationEnabled && !SimulationLoaded)
+                CoreService.Simulate();
         }
 
         private void OnRestartButtonClick()
@@ -223,19 +280,20 @@ namespace Client.Scripts.Core
             UnloadDesign();
         }
 
-        #endregion
-
         public Text titleText;
 
         public GameObject modeHolder;
+        public Image modeBackground;
         public Text modeText;
+        public Color constructionModeColor = Color.white;
+        public Color waypointsModeColor = Color.white;
+        public Color simulationModeColor = Color.white;
+
+        #endregion
 
         public void UpdatePlayPauseImage()
         {
-            if (SimulationEnabled)
-                playPauseButtonImage.sprite = pauseSprite;
-            else
-                playPauseButtonImage.sprite = playSprite;
+            playPauseButtonImage.sprite = SimulationEnabled ? pauseSprite : playSprite;
         }
 
         public void LoadDesign(string fileName)
@@ -244,6 +302,8 @@ namespace Client.Scripts.Core
             titleText.gameObject.SetActive(true);
             titleText.text = Path.GetFileName(fileName);
             Mode = ApplicationMode.Construction;
+            SimulationComplete = false;
+            SimulationEnabled = false;
         }
 
         public void UnloadDesign()
