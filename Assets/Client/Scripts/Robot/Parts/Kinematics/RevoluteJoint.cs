@@ -100,8 +100,8 @@ namespace Client.Scripts.Robot.Parts.Kinematics
         public void Deserialize(PartData data)
         {
             _id = data.Id;
+            _rotationY = data.RotationY;
             // TODO: Rotate
-//            _rotationY = data.RotationY;
             _minAngle = data.MinAngle;
             _maxAngle = data.MaxAngle;
             initialAngle = data.InitialAngle;

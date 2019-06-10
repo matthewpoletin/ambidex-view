@@ -21,6 +21,6 @@ namespace Client.Scripts.Service.Model
         public RobotConfiguration RobotConfiguration { get; set; }
 
         [JsonProperty("waypointPath", Required = Required.Always)]
-        public WaypointPath WaypointPath { get; set; }
+        public WaypointsConfiguration WaypointsConfiguration { get; set; }
     }
 }

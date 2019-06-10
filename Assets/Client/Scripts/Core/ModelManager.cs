@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Client.Scripts.Robot;
 using Client.Scripts.Robot.Parts.Kinematics;
@@ -6,11 +7,21 @@ using Client.Scripts.Service;
 using Client.Scripts.Service.Model;
 using Client.Scripts.Ui.Editors;
 using Client.Scripts.Ui.Logging.View;
+using Client.Scripts.Ui.Status.View;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Client.Scripts.Core
 {
+    public class DesignInfo
+    {
+        public string Name;
+        public string Description;
+        public string Author;
+        public DateTime CreateDate;
+    }
+
     /// <summary>
     /// Current state of application
     /// </summary>
@@ -100,7 +111,9 @@ namespace Client.Scripts.Core
             }
         }
 
-        private float _movementSpeed = 40f;
+        private string _designFileName = null;
+
+        private DesignInfo _designData = null;
 
         [HideInInspector]
         public Queue<SimulationStep> simulationProcess = null;
@@ -254,6 +267,7 @@ namespace Client.Scripts.Core
 
         private void OnSaveButtonClick()
         {
+            SaveDesign();
         }
 
         private void OnPlayPauseButtonClick()
@@ -296,22 +310,104 @@ namespace Client.Scripts.Core
             playPauseButtonImage.sprite = SimulationEnabled ? pauseSprite : playSprite;
         }
 
-        public void LoadDesign(string fileName)
+        #region Serialization
+
+        /// <summary>
+        /// Load design from file
+        /// </summary>
+        /// <param name="fileName">File name</param>
+        /// <returns>Loading result</returns>
+        public bool LoadDesign(string fileName)
         {
-            RobotController.Instance.BuildFromFile(fileName);
+            // Store file name for later saving
+            _designFileName = fileName;
+
+            // Load file
+            if (!File.Exists(fileName))
+                return false;
+
+            var data = JsonConvert.DeserializeObject<Design>(File.ReadAllText(fileName));
+            if (data == null)
+                return false;
+
+            // Store design data
+            _designData = new DesignInfo
+            {
+                Name = data.Name,
+                Description = data.Description,
+                Author = data.Author,
+                CreateDate = data.CreateDate,
+            };
+
+            // Initialize robot data
+            if (!RobotController.Instance.BuildFromFile(fileName))
+                return false;
+
+            // Initialize waypoint data
+            if (!WaypointManager.Instance.Load(data.WaypointsConfiguration.Waypoints))
+                return false;
+
+            // Update UI
             titleText.gameObject.SetActive(true);
             titleText.text = Path.GetFileName(fileName);
             Mode = ApplicationMode.Construction;
             SimulationComplete = false;
             SimulationEnabled = false;
+
+            return true;
         }
+
+        /// <summary>
+        /// Save design
+        /// </summary>
+        /// <returns>Save result</returns>
+        private bool SaveDesign()
+        {
+            StatusUiController.Instance.Percentage = 0f;
+            StatusUiController.Instance.Show();
+
+            // Check if fail name stored
+            if (_designFileName == null)
+                return false;
+
+            // Serialize design
+            if (_designData == null)
+                return false;
+
+            var design = new Design
+            {
+                Name = _designData.Name,
+                Description = _designData.Description,
+                Author = _designData.Author,
+                CreateDate = _designData.CreateDate,
+            };
+
+            // Serialize robot configuration
+            design.RobotConfiguration = RobotController.Instance.Serialize();
+
+            // Serialize waypoints configuration
+            design.WaypointsConfiguration = WaypointManager.Instance.Serialize();
+
+            // Serialize JSON to a string and then write string to a file
+            File.WriteAllText(_designFileName, JsonConvert.SerializeObject(design, Formatting.Indented));
+
+            StatusUiController.Instance.Percentage = 1f;
+
+            return true;
+        }
+
+        #endregion
 
         public void UnloadDesign()
         {
-            titleText.text = "";
-            titleText.gameObject.SetActive(false);
+            // Unload design
             RobotController.Instance.Unload();
             WaypointManager.Instance.Unload();
+            _designFileName = null;
+            _designData = null;
+            // Update UI
+            titleText.text = "";
+            titleText.gameObject.SetActive(false);
             Mode = ApplicationMode.Unloaded;
         }
     }

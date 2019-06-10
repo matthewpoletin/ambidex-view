@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Client.Scripts.Core;
+using Client.Scripts.Robot.Parts.Common;
+using Client.Scripts.Robot.Parts.Common.Tips;
 using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Service.Model;
 using Newtonsoft.Json;
@@ -46,7 +47,7 @@ namespace Client.Scripts.Robot
         public readonly Dictionary<Guid, ItemData> ItemData =
             new Dictionary<Guid, ItemData>();
 
-        private string _lastFileName = null;
+        public string lastFileName = null;
 
         public void ClearRoot()
         {
@@ -57,17 +58,19 @@ namespace Client.Scripts.Robot
 
         public void Rebuild()
         {
-            if (_lastFileName == null)
+            if (lastFileName == null)
                 return;
 
-            BuildFromFile(_lastFileName);
+            BuildFromFile(lastFileName);
         }
 
         public void Unload()
         {
-            _lastFileName = null;
+            lastFileName = null;
             ClearRoot();
         }
+
+        #region Serialization
 
         /// <summary>
         /// Build robot from json configuration file
@@ -86,32 +89,43 @@ namespace Client.Scripts.Robot
 
         public void BuildFromText(string fileString)
         {
+            var data = JsonConvert.DeserializeObject<Design>(fileString);
+            BuildFromData(data.RobotConfiguration.Items);
+        }
+
+        public bool BuildFromData(List<PartData> data)
+        {
             ClearRoot();
 
-            var data = JsonConvert.DeserializeObject<Design>(fileString);
-
             var nextParent = bodyRoot;
-            for (var i = 0; i < data.RobotConfiguration.Items.Count; i++)
+            for (var i = 0; i < data.Count; i++)
             {
-                var item = data.RobotConfiguration.Items[i];
+                var item = data[i];
 
                 switch (item.Type)
                 {
                     case "Beam":
-                        nextParent = PartFactory.Instance.BuildBeam(item, nextParent).Item2;
+                        GameObject beamGo;
+                        (beamGo, nextParent) = PartFactory.Instance.BuildBeam(item, nextParent);
+                        beamGo.GetComponent<Beam>().Deserialize(item);
+                        AddItem(item.Id, ItemType.Beam, beamGo);
                         break;
                     case "RotaryJoint":
                         var rotaryJointGo = PartFactory.Instance.BuildRotaryJoint(item, nextParent).Item1;
                         rotaryJointGo.GetComponent<RotaryJoint>().Setup(item);
+                        rotaryJointGo.GetComponent<RotaryJoint>().Deserialize(item);
                         AddItem(item.Id, ItemType.RotaryJoint, rotaryJointGo);
                         break;
                     case "RevoluteJoint":
                         var revoluteJointGo = PartFactory.Instance.BuildRevoluteJoint(item, nextParent).Item1;
                         revoluteJointGo.GetComponent<RevoluteJoint>().Setup(item);
+                        revoluteJointGo.GetComponent<RevoluteJoint>().Deserialize(item);
                         AddItem(item.Id, ItemType.RevoluteJoint, revoluteJointGo);
                         break;
                     case "Tip":
                         var tipGo = PartFactory.Instance.BuildTip(item, nextParent);
+                        tipGo.GetComponent<BasicTip>().Deserialize(item);
+                        AddItem(item.Id, ItemType.BasicTip, tipGo);
                         break;
                     default:
                         Debug.LogWarning($"Unrecognized item type {item.Type}");
@@ -120,10 +134,14 @@ namespace Client.Scripts.Robot
             }
 
             // Initialize joints
-            foreach (var jointDataItem in ItemData)
+            foreach (var item in ItemData)
             {
-                var jointGo = jointDataItem.Value.GameObject;
-                var type = jointDataItem.Value.Type;
+                var jointGo = item.Value.GameObject;
+                var type = item.Value.Type;
+
+                if (type != ItemType.RevoluteJoint || type != ItemType.RotaryJoint)
+                    continue;
+
                 var body1 = jointGo.transform.parent;
                 var body2 = jointGo.transform.parent.GetChild(jointGo.transform.GetSiblingIndex() + 1);
                 switch (type)
@@ -140,9 +158,54 @@ namespace Client.Scripts.Robot
                 }
             }
 
-            // Load waypoint data
-            WaypointManager.Instance.Load(data.WaypointPath.Waypoints);
+            return true;
         }
+
+        /// <summary>
+        /// Serialize all robot configuration data
+        /// </summary>
+        /// <returns>Configuration of robot</returns>
+        public RobotConfiguration Serialize()
+        {
+            var robotConfiguration = new RobotConfiguration
+            {
+                Modeled = false,
+                Items = new List<PartData>(),
+            };
+
+            foreach (var pair in ItemData)
+            {
+                PartData data = null;
+                var go = pair.Value.GameObject;
+                switch (pair.Value.Type)
+                {
+                    case ItemType.RevoluteJoint:
+                        data = go.GetComponent<RevoluteJoint>().Serialize();
+                        break;
+                    case ItemType.RotaryJoint:
+                        data = go.GetComponent<RotaryJoint>().Serialize();
+                        break;
+                    case ItemType.Beam:
+                        data = go.GetComponent<Beam>().Serialize();
+                        break;
+                    case ItemType.BasicTip:
+                        data = go.GetComponent<BasicTip>().Serialize();
+                        break;
+                    case ItemType.Undefined:
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                data.Id = pair.Key;
+                robotConfiguration.Items.Add(data);
+            }
+
+            return robotConfiguration;
+        }
+
+        #endregion
+
+        #region ItemData
 
         private void AddItem(Guid id, ItemType type, GameObject go)
         {
@@ -167,5 +230,7 @@ namespace Client.Scripts.Robot
                     result.Add(Tuple.Create(item.Key, item.Value.GameObject));
             return result;
         }
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Client.Scripts.Service.Model;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace Client.Scripts.Core
 
         public Transform waypointsHolder;
 
-        private IEnumerable<WaypointData> _lastLoadedData;
+        private List<WaypointData> _lastLoadedData;
 
         /// <summary>
         /// Remove all waypoint game objects
@@ -40,7 +41,7 @@ namespace Client.Scripts.Core
         /// Build waypoints from waypoint data
         /// </summary>
         /// <param name="waypoints">List of waypoint data</param>
-        public void Populate(IEnumerable<WaypointData> waypoints)
+        public void Populate(List<WaypointData> waypoints)
         {
             foreach (var waypoint in waypoints)
             {
@@ -54,13 +55,15 @@ namespace Client.Scripts.Core
         /// Load new waypoints data
         /// </summary>
         /// <param name="waypoints">List of waypoint data</param>
-        public bool Load(IEnumerable<WaypointData> waypoints)
+        public bool Load(List<WaypointData> waypoints)
         {
             if (waypoints == null)
                 return false;
 
+            _lastLoadedData = waypoints;
+
             ClearRoot();
-            Populate(waypoints);
+            Populate(_lastLoadedData);
             return true;
         }
 
@@ -74,5 +77,21 @@ namespace Client.Scripts.Core
             _lastLoadedData = null;
             ClearRoot();
         }
+
+        #region Serializaion
+
+        /// <summary>
+        /// Save current waypoint data
+        /// </summary>
+        /// <returns>Configuration of waypoints</returns>
+        public WaypointsConfiguration Serialize()
+        {
+            return new WaypointsConfiguration
+            {
+                Waypoints = _lastLoadedData.ToList(),
+            };
+        }
+
+        #endregion
     }
 }

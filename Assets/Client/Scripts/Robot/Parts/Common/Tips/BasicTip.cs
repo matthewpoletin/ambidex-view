@@ -1,4 +1,3 @@
-using System;
 using Client.Scripts.Service.Model;
 using UnityEngine;
 
@@ -22,12 +21,16 @@ namespace Client.Scripts.Robot.Parts.Common.Tips
 
         public void Deserialize(PartData data)
         {
-            throw new NotImplementedException();
+            _rotationY = data.RotationY;
         }
 
         public PartData Serialize()
         {
-            throw new NotImplementedException();
+            return new PartData
+            {
+                Type = "Tip",
+                RotationY = _rotationY,
+            };
         }
     }
 }

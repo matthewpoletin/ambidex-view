@@ -12,7 +12,7 @@ namespace Client.Scripts.Service.Model
         [JsonProperty("type", Required = Required.Always)]
         public string Type { get; set; }
 
-        [JsonProperty("length", Required = Required.Always)]
+        [JsonProperty("length", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public float Length { get; set; }
 
         [JsonProperty("rotationY", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
@@ -33,10 +33,10 @@ namespace Client.Scripts.Service.Model
 
     public class RobotConfiguration
     {
-        [JsonProperty("Modeled", Required = Required.Always)]
+        [JsonProperty("modeled", Required = Required.Always)]
         public bool Modeled { get; set; }
 
-        [JsonProperty("Items", Required = Required.Always)]
+        [JsonProperty("items", Required = Required.Always)]
         public List<PartData> Items { get; set; }
     }
 }

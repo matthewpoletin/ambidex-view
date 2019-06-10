@@ -50,8 +50,8 @@ namespace Client.Scripts.Robot.Parts.Kinematics
 
         protected override void Init()
         {
-            if (!(_minAngle < initialAngle && initialAngle < _maxAngle))
-                Debug.LogWarning("");
+            if (!(_minAngle <= initialAngle && initialAngle <= _maxAngle))
+                Debug.LogWarning("Initial angle is not in min/max range");
 
             _currentAngle = initialAngle;
         }
@@ -101,8 +101,8 @@ namespace Client.Scripts.Robot.Parts.Kinematics
         {
             _id = data.Id;
             _rotationY = data.RotationY;
-            MaxAngle = data.MinAngle;
-            MinAngle = data.MaxAngle;
+            MinAngle = data.MinAngle;
+            MaxAngle = data.MaxAngle;
             initialAngle = data.InitialAngle;
         }
 

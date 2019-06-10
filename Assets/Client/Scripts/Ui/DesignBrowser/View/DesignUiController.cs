@@ -19,7 +19,7 @@ namespace Client.Scripts.Ui.DesignBrowser.View
 //            previewImage.sprite = Sprite.Create(new Texture2D(), );
 
             nameText.text = data.Name;
-            createDateText.text = data.CreateDate.ToString("d/M/yy");
+            createDateText.text = data.CreateDate.ToString("dd/MM/yy");
 
             button.onClick.AddListener(() =>
             {

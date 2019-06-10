@@ -21,7 +21,7 @@ namespace Client.Scripts.Service.Model
         public Position Position { get; set; }
     }
 
-    public class WaypointPath
+    public class WaypointsConfiguration
     {
         [JsonProperty("waypoints", Required = Required.Always)]
         public List<WaypointData> Waypoints { get; set; }
