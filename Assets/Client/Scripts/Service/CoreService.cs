@@ -20,5 +20,10 @@ namespace Client.Scripts.Service
                         .OrderBy(step => step.stepId));
             });
         }
+
+        public static void SyncWaypointPath()
+        {
+            // TODO: Implement
+        }
     }
 }

@@ -175,8 +175,10 @@ namespace Client.Scripts.Core
             editButton.onClick.AddListener(OnEditButtonClick);
             waypointsButton.onClick.AddListener(OnWaypointsButtonClick);
             simulateButton.onClick.AddListener(OnSimulateButtonClick);
-            addButton.onClick.AddListener(OnAddButtonClick);
-            saveButton.onClick.AddListener(OnSaveButtonClick);
+            addPartButton.onClick.AddListener(OnAddPartButtonClick);
+            saveDesignButton.onClick.AddListener(OnSaveDesignButtonClick);
+            addWaypointButton.onClick.AddListener(OnAddWaypointButtonClick);
+            syncWaypointsButton.onClick.AddListener(OnSyncWaypointsButtonClick);
             playPauseButton.onClick.AddListener(OnPlayPauseButtonClick);
             restartButton.onClick.AddListener(OnRestartButtonClick);
             closeButton.onClick.AddListener(OnCloseButtonClick);
@@ -229,8 +231,11 @@ namespace Client.Scripts.Core
         public Button waypointsButton;
         public Button simulateButton;
 
-        public Button addButton;
-        public Button saveButton;
+        public Button addPartButton;
+        public Button saveDesignButton;
+
+        public Button addWaypointButton;
+        public Button syncWaypointsButton;
 
         public Button restartButton;
         public Button playPauseButton;
@@ -261,13 +266,25 @@ namespace Client.Scripts.Core
             Mode = ApplicationMode.Simulation;
         }
 
-        private void OnAddButtonClick()
+        private void OnAddPartButtonClick()
         {
         }
 
-        private void OnSaveButtonClick()
+        private void OnSaveDesignButtonClick()
         {
             SaveDesign();
+        }
+
+        private void OnAddWaypointButtonClick()
+        {
+            // TODO: Add waypoint creating functionality
+            Debug.Log("Add waypoint");
+        }
+
+        private void OnSyncWaypointsButtonClick()
+        {
+            CoreService.SyncWaypointPath();
+            Debug.Log("Sync waypoints");
         }
 
         private void OnPlayPauseButtonClick()
