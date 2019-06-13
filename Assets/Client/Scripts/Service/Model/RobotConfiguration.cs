@@ -27,6 +27,9 @@ namespace Client.Scripts.Service.Model
         [JsonProperty("initialAngle", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public float InitialAngle { get; set; }
 
+        [JsonProperty("angle", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        public float CurrentAngle { get; set; }
+
         [JsonProperty("diameter", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public float Diameter { get; set; }
     }

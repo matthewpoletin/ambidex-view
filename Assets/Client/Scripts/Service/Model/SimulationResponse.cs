@@ -1,26 +1,24 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Client.Scripts.Service.Model
 {
-    [Serializable]
-    public class SimulationResponseItem
-    {
-        public Guid itemId;
-        public float angle;
-    }
-
-    [Serializable]
     public class SimulationStep
     {
-        public int stepId;
-        public List<SimulationResponseItem> items;
+        [JsonProperty("stepId", Required = Required.Always)]
+        public int StepId;
+
+        [JsonProperty("configuration", Required = Required.Always)]
+        public List<PartData> Configuration;
     }
 
-    [Serializable]
     public class SimulationResponse
     {
-        public Guid designId;
-        public List<SimulationStep> process;
+        [JsonProperty("designId", Required = Required.Always)]
+        public Guid DesignId;
+
+        [JsonProperty("process", Required = Required.Always)]
+        public List<SimulationStep> Process;
     }
 }

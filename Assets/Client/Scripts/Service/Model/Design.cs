@@ -5,6 +5,9 @@ namespace Client.Scripts.Service.Model
 {
     public class Design
     {
+        [JsonProperty("id", Required = Required.Always)]
+        public Guid Id { get; set; }
+
         [JsonProperty("name", Required = Required.Always)]
         public string Name { get; set; }
 

@@ -1,0 +1,77 @@
+{
+  "id": "20136505-ddb7-4bd6-95d5-9fb8224bc800",
+  "name": "Custom robot configuration",
+  "description": "Test Robot Manipulator configuration",
+  "author": "Matthew Poletin",
+  "createDate": "2019-06-10T11:44:34",
+  "robotConfiguration": {
+    "modeled": false,
+    "items": [
+      {
+        "id": "cb311195-9cdf-4b7e-a1b1-af42f19301ea",
+        "type": "Beam",
+        "length": 1.0,
+        "rotationY": 0.0,
+        "minAngle": 0.0,
+        "maxAngle": 0.0,
+        "initialAngle": 0.0,
+        "diameter": 1.0
+      },
+      {
+        "id": "46d39d18-f342-44ad-9aff-44bcb7a2591f",
+        "type": "RotaryJoint",
+        "length": 0.0,
+        "rotationY": 90.0,
+        "minAngle": 90.0,
+        "maxAngle": 270.0,
+        "initialAngle": 180.0,
+        "diameter": 0.0
+      },
+      {
+        "id": "ecc0055b-ac52-4f68-b709-96cadf993c40",
+        "type": "Beam",
+        "length": 1.0,
+        "rotationY": 0.0,
+        "minAngle": 0.0,
+        "maxAngle": 0.0,
+        "initialAngle": 0.0,
+        "diameter": 1.0
+      },
+      {
+        "id": "4d14f339-0c71-4bb2-a1c3-f89ade8b05da",
+        "type": "Tip",
+        "length": 0.0,
+        "rotationY": 0.0,
+        "minAngle": 0.0,
+        "maxAngle": 0.0,
+        "initialAngle": 0.0,
+        "diameter": 0.0
+      }
+    ]
+  },
+  "waypointPath": {
+    "waypoints": [
+      {
+        "position": {
+          "x": 0.6,
+          "y": 2.7,
+          "z": 0.4
+        }
+      },
+      {
+        "position": {
+          "x": 1.1,
+          "y": 2.0,
+          "z": 0.5
+        }
+      },
+      {
+        "position": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      }
+    ]
+  }
+}

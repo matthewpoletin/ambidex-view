@@ -31,7 +31,7 @@ namespace Client.Scripts.Core
         /// <summary>
         /// Remove all waypoint game objects
         /// </summary>
-        public void ClearRoot()
+        public void Clear()
         {
             foreach (Transform child in waypointsHolder)
                 Destroy(child.gameObject);
@@ -62,7 +62,7 @@ namespace Client.Scripts.Core
 
             _lastLoadedData = waypoints;
 
-            ClearRoot();
+            Clear();
             Populate(_lastLoadedData);
             return true;
         }
@@ -75,7 +75,7 @@ namespace Client.Scripts.Core
         public void Unload()
         {
             _lastLoadedData = null;
-            ClearRoot();
+            Clear();
         }
 
         #region Serializaion

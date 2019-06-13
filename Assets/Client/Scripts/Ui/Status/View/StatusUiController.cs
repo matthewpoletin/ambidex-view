@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,6 +50,13 @@ namespace Client.Scripts.Ui.Status.View
         public void Hide()
         {
             statusHolder.SetActive(false);
+        }
+
+        public void Modify(float percentage, string text)
+        {
+            Percentage = percentage;
+            infoText.text = text;
+            Show();
         }
     }
 }

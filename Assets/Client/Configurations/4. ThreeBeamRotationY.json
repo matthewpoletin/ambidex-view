@@ -1,21 +1,12 @@
 {
-  "name": "Custom robot configuration",
+  "id": "f776b096-da3c-427c-ba64-228fa915f42c",
+  "name": "Specific robot configuration",
   "description": "Test Robot Manipulator configuration",
   "author": "Matthew Poletin",
   "createDate": "2019-06-10T11:44:34",
   "robotConfiguration": {
     "modeled": false,
     "items": [
-      {
-        "id": "997dcd45-a9a7-4b49-a847-40a59bd1997d",
-        "type": "RevoluteJoint",
-        "length": 0.0,
-        "rotationY": 90.0,
-        "minAngle": 90.0,
-        "maxAngle": 270.0,
-        "initialAngle": 180.0,
-        "diameter": 0.0
-      },
       {
         "id": "cb311195-9cdf-4b7e-a1b1-af42f19301ea",
         "type": "Beam",

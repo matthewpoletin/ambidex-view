@@ -13,7 +13,18 @@ namespace Client.Scripts.Robot.Parts.Kinematics
 
         public AngleSelectorController angleSelectorController;
 
-        public float initialAngle = 180.0f;
+        private float _initialAngle = 180.0f;
+
+        public float InitialAngle
+        {
+            get => _initialAngle;
+            set
+            {
+                _initialAngle = value;
+                SetAngle(_initialAngle);
+            }
+        }
+
         private float _currentAngle;
 
         private float _minAngle;
@@ -43,17 +54,17 @@ namespace Client.Scripts.Robot.Parts.Kinematics
         {
             _minAngle = mnAngle;
             _maxAngle = mxAngle;
-            initialAngle = iAngle;
+            _initialAngle = iAngle;
 
             Init();
         }
 
         protected override void Init()
         {
-            if (!(_minAngle <= initialAngle && initialAngle <= _maxAngle))
+            if (!(_minAngle <= _initialAngle && _initialAngle <= _maxAngle))
                 Debug.LogWarning("Initial angle is not in min/max range");
 
-            _currentAngle = initialAngle;
+            _currentAngle = _initialAngle;
         }
 
         /// <summary>
@@ -73,6 +84,9 @@ namespace Client.Scripts.Robot.Parts.Kinematics
         /// </summary>
         public void SetAngle(float desiredAngle)
         {
+            if (firstObject == null || secondObject == null)
+                return;
+
             desiredAngle = Mathf.Clamp(desiredAngle, _minAngle, _maxAngle);
             secondObject.transform.RotateAround(firstObject.transform.position, transform.right,
                 desiredAngle - _currentAngle);
@@ -103,7 +117,7 @@ namespace Client.Scripts.Robot.Parts.Kinematics
             _rotationY = data.RotationY;
             MinAngle = data.MinAngle;
             MaxAngle = data.MaxAngle;
-            initialAngle = data.InitialAngle;
+            _initialAngle = data.InitialAngle;
         }
 
         public PartData Serialize()
@@ -115,7 +129,7 @@ namespace Client.Scripts.Robot.Parts.Kinematics
                 RotationY = _rotationY,
                 MinAngle = _minAngle,
                 MaxAngle = _maxAngle,
-                InitialAngle = initialAngle,
+                InitialAngle = _initialAngle,
             };
         }
     }

@@ -139,7 +139,7 @@ namespace Client.Scripts.Robot
                 var jointGo = item.Value.GameObject;
                 var type = item.Value.Type;
 
-                if (type != ItemType.RevoluteJoint || type != ItemType.RotaryJoint)
+                if (!(type == ItemType.RevoluteJoint || type == ItemType.RotaryJoint))
                     continue;
 
                 var body1 = jointGo.transform.parent;

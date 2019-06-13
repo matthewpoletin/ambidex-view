@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Client.Scripts.Core.Locus;
 using Client.Scripts.Robot;
 using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Service;
@@ -16,6 +17,7 @@ namespace Client.Scripts.Core
 {
     public class DesignInfo
     {
+        public Guid Id;
         public string Name;
         public string Description;
         public string Author;
@@ -32,6 +34,9 @@ namespace Client.Scripts.Core
 
         // Design edit mode
         Construction,
+
+        // Preview of locus points
+        Locus,
 
         // Edit waypoint path mode
         Waypoints,
@@ -69,6 +74,10 @@ namespace Client.Scripts.Core
                     case ApplicationMode.Construction:
                         PartSelection.Instance.UnselectObject();
                         break;
+                    case ApplicationMode.Locus:
+                        LocusManager.Instance.Hide();
+                        IsLocusShown = false;
+                        break;
                     case ApplicationMode.Simulation:
                         SimulationEnabled = false;
                         break;
@@ -80,6 +89,7 @@ namespace Client.Scripts.Core
                 simulateModeButtons.SetActive(value == ApplicationMode.Simulation);
                 closeButton.gameObject.SetActive(value != ApplicationMode.Unloaded);
                 editButton.interactable = value != ApplicationMode.Construction;
+                locusButton.interactable = value != ApplicationMode.Locus;
                 waypointsButton.interactable = value != ApplicationMode.Waypoints;
                 simulateButton.interactable = value != ApplicationMode.Simulation;
 
@@ -94,6 +104,12 @@ namespace Client.Scripts.Core
                         modeHolder.SetActive(true);
                         modeText.text = "Construction";
                         modeBackground.color = constructionModeColor;
+                        break;
+                    case ApplicationMode.Locus:
+                        modeHolder.SetActive(true);
+                        modeText.text = "Locus";
+                        modeBackground.color = locusModeColor;
+                        IsLocusShown = true;
                         break;
                     case ApplicationMode.Waypoints:
                         modeHolder.SetActive(true);
@@ -169,10 +185,38 @@ namespace Client.Scripts.Core
             }
         }
 
+        private bool _isLocusShown = false;
+
+        public bool IsLocusShown
+        {
+            get => _isLocusShown;
+            set
+            {
+                _isLocusShown = value;
+                if (_isLocusShown)
+                {
+                    var design = SerializeDesign();
+                    if (design == null)
+                        return;
+                    CoreService.UploadDesignAndLoadLocus(design);
+                }
+                else
+                {
+                    LocusManager.Instance.Hide();
+                }
+            }
+        }
+
+        private void OnLocusButtonClick()
+        {
+            Mode = ApplicationMode.Locus;
+        }
+
         private void Start()
         {
             designsButton.onClick.AddListener(OnDesignsButtonClick);
             editButton.onClick.AddListener(OnEditButtonClick);
+            locusButton.onClick.AddListener(OnLocusButtonClick);
             waypointsButton.onClick.AddListener(OnWaypointsButtonClick);
             simulateButton.onClick.AddListener(OnSimulateButtonClick);
             addPartButton.onClick.AddListener(OnAddPartButtonClick);
@@ -185,6 +229,8 @@ namespace Client.Scripts.Core
 
             SimulationComplete = false;
 
+            IsLocusShown = false;
+
             UpdatePlayPauseImage();
 
             UnloadDesign();
@@ -196,7 +242,7 @@ namespace Client.Scripts.Core
             if (SimulationEnabled && SimulationLoaded && !SimulationComplete)
             {
                 var step = simulationProcess.Dequeue();
-                foreach (var item in step.items)
+                foreach (var item in step.Configuration)
                 {
                     var itemData = RobotController.Instance.GetItemById(item.itemId);
                     if (itemData == null)
@@ -228,6 +274,7 @@ namespace Client.Scripts.Core
         public Button designsButton;
 
         public Button editButton;
+        public Button locusButton;
         public Button waypointsButton;
         public Button simulateButton;
 
@@ -317,6 +364,7 @@ namespace Client.Scripts.Core
         public Image modeBackground;
         public Text modeText;
         public Color constructionModeColor = Color.white;
+        public Color locusModeColor = Color.white;
         public Color waypointsModeColor = Color.white;
         public Color simulationModeColor = Color.white;
 
@@ -350,6 +398,7 @@ namespace Client.Scripts.Core
             // Store design data
             _designData = new DesignInfo
             {
+                Id = data.Id,
                 Name = data.Name,
                 Description = data.Description,
                 Author = data.Author,
@@ -388,22 +437,9 @@ namespace Client.Scripts.Core
                 return false;
 
             // Serialize design
-            if (_designData == null)
+            var design = SerializeDesign();
+            if (design == null)
                 return false;
-
-            var design = new Design
-            {
-                Name = _designData.Name,
-                Description = _designData.Description,
-                Author = _designData.Author,
-                CreateDate = _designData.CreateDate,
-            };
-
-            // Serialize robot configuration
-            design.RobotConfiguration = RobotController.Instance.Serialize();
-
-            // Serialize waypoints configuration
-            design.WaypointsConfiguration = WaypointManager.Instance.Serialize();
 
             // Serialize JSON to a string and then write string to a file
             File.WriteAllText(_designFileName, JsonConvert.SerializeObject(design, Formatting.Indented));
@@ -411,6 +447,30 @@ namespace Client.Scripts.Core
             StatusUiController.Instance.Percentage = 1f;
 
             return true;
+        }
+
+        private Design SerializeDesign()
+        {
+            // Check if fail name stored
+            if (_designFileName == null)
+                return null;
+
+            // Serialize design
+            if (_designData == null)
+                return null;
+
+            var design = new Design
+            {
+                Id = _designData.Id,
+                Name = _designData.Name,
+                Description = _designData.Description,
+                Author = _designData.Author,
+                CreateDate = _designData.CreateDate,
+                RobotConfiguration = RobotController.Instance.Serialize(),
+                WaypointsConfiguration = WaypointManager.Instance.Serialize(),
+            };
+
+            return design;
         }
 
         #endregion
