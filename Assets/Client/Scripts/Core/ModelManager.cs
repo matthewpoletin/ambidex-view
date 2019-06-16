@@ -244,17 +244,17 @@ namespace Client.Scripts.Core
                 var step = simulationProcess.Dequeue();
                 foreach (var item in step.Configuration)
                 {
-                    var itemData = RobotController.Instance.GetItemById(item.itemId);
+                    var itemData = RobotController.Instance.GetItemById(item.Id);
                     if (itemData == null)
                     {
-                        Debug.LogWarning($"Item {item.itemId} not found");
+                        Debug.LogWarning($"Item {item.Id} not found");
                         continue;
                     }
 
                     switch (itemData.Type)
                     {
                         case ItemType.RotaryJoint:
-                            itemData.GameObject.GetComponent<RotaryJoint>().SetAngle(item.angle);
+                            itemData.GameObject.GetComponent<RotaryJoint>().SetAngle(item.CurrentAngle);
                             break;
                     }
                 }
