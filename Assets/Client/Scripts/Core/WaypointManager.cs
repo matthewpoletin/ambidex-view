@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Client.Scripts.Service.Model;
+using Client.Scripts.Ui.Editors;
 using UnityEngine;
 
 namespace Client.Scripts.Core
@@ -28,6 +30,11 @@ namespace Client.Scripts.Core
 
         private List<WaypointData> _lastLoadedData;
 
+        private WaypointController _selectedWaypoint = null;
+
+        private readonly Dictionary<Guid, Tuple<GameObject, WaypointController>> _waypoints =
+            new Dictionary<Guid, Tuple<GameObject, WaypointController>>();
+
         /// <summary>
         /// Remove all waypoint game objects
         /// </summary>
@@ -43,11 +50,12 @@ namespace Client.Scripts.Core
         /// <param name="waypoints">List of waypoint data</param>
         public void Populate(List<WaypointData> waypoints)
         {
-            foreach (var waypoint in waypoints)
+            foreach (var dataItem in waypoints)
             {
                 var waypointGo = Instantiate(waypointPrefab, waypointsHolder);
-                waypointGo.transform.localPosition =
-                    new Vector3(waypoint.Position.X, waypoint.Position.Y, waypoint.Position.Z);
+                var waypointController = waypointGo.GetComponent<WaypointController>();
+                waypointController.Initialize(dataItem);
+                _waypoints.Add(dataItem.Id, Tuple.Create(waypointGo, waypointController));
             }
         }
 
@@ -86,6 +94,7 @@ namespace Client.Scripts.Core
         /// <returns>Configuration of waypoints</returns>
         public WaypointsConfiguration Serialize()
         {
+            // TODO: Serialize properly
             return new WaypointsConfiguration
             {
                 Waypoints = _lastLoadedData.ToList(),
@@ -93,5 +102,41 @@ namespace Client.Scripts.Core
         }
 
         #endregion
+
+        #region Selection
+
+        public void SelectWaypoint(WaypointController waypoint)
+        {
+            if (_selectedWaypoint == waypoint)
+            {
+                UnselectWaypoint();
+                return;
+            }
+
+            _selectedWaypoint = waypoint;
+            InfoPanelController.Instance.ShowWaypointEditor(waypoint);
+        }
+
+        public void UnselectWaypoint()
+        {
+            _selectedWaypoint = null;
+        }
+
+        #endregion
+
+        public WaypointController CreateWaypoint()
+        {
+            // TODO:
+            return null;
+        }
+
+        public void DeleteWaypoint(Guid id)
+        {
+            if (!_waypoints.TryGetValue(id, out var tuple))
+                return;
+
+            Destroy(tuple.Item1);
+            _waypoints.Remove(id);
+        }
     }
 }

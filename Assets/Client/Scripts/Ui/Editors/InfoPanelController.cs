@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Client.Scripts.Core;
 using Client.Scripts.Robot.Parts.Kinematics;
 using Client.Scripts.Ui.DesignBrowser.Model;
 using Client.Scripts.Ui.DesignBrowser.View;
@@ -34,6 +35,7 @@ namespace Client.Scripts.Ui.Editors
         public RotaryJointEditor rotaryJointEditor;
         public RevoluteJointEditor revoluteJointEditor;
         public DesignBrowserUiController designBrowser;
+        public WaypointEditor waypointEditor;
 
         public void HideAll()
         {
@@ -99,6 +101,21 @@ namespace Client.Scripts.Ui.Editors
         {
             designBrowser.Deactivate();
             designBrowser.gameObject.SetActive(false);
+        }
+
+        public void ShowWaypointEditor(WaypointController waypoint)
+        {
+            if (ModelManager.Instance.Mode != ApplicationMode.Waypoints)
+                return;
+
+            waypointEditor.gameObject.SetActive(true);
+            waypointEditor.Activate(waypoint);
+        }
+
+        public void HideWaypointEditor()
+        {
+            waypointEditor.Deactivate();
+            waypointEditor.gameObject.SetActive(false);
         }
     }
 }

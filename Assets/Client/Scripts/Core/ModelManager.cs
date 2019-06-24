@@ -324,8 +324,8 @@ namespace Client.Scripts.Core
 
         private void OnAddWaypointButtonClick()
         {
-            // TODO: Add waypoint creating functionality
-            Debug.Log("Add waypoint");
+            var newWaypoint = WaypointManager.Instance.CreateWaypoint();
+            InfoPanelController.Instance.ShowWaypointEditor(newWaypoint);
         }
 
         private void OnSyncWaypointsButtonClick()
