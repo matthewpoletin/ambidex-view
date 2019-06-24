@@ -73,7 +73,7 @@ namespace Client.Scripts.Robot
         {
             var jointGo = Instantiate(rotaryJointPrefab, parent);
             jointGo.transform.Rotate(0, partData.RotationY, 0);
-            jointGo.GetComponent<RotaryJoint>().Setup(partData.MinAngle, partData.MaxAngle, partData.InitialAngle);
+            jointGo.GetComponent<RotaryJoint>().Setup(partData.MinAngle, partData.MaxAngle);
             return Tuple.Create(jointGo, parent);
         }
 

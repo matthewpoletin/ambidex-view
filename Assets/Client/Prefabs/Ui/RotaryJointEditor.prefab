@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 385224118913715184}
   - component: {fileID: 748221889382888414}
   m_Layer: 5
-  m_Name: InitialAngle
+  m_Name: CurrentAngle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1735,7 +1735,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Initial Angle
+  m_Text: Current Angle
 --- !u!114 &1830932365937359350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2721,8 +2721,8 @@ MonoBehaviour:
   minAngleSlider: {fileID: 1372694275639883967}
   maxAngleInputField: {fileID: 4276886988779200061}
   maxAngleSlider: {fileID: 3837492912887766298}
-  initialAngleInputField: {fileID: 8288844612619936014}
-  initialAngleSlider: {fileID: 7633671856469140335}
+  currentAngleInputField: {fileID: 8288844612619936014}
+  currentAngleSlider: {fileID: 7633671856469140335}
 --- !u!1 &6410202681498489285
 GameObject:
   m_ObjectHideFlags: 0

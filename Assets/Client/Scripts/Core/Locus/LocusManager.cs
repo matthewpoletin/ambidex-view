@@ -81,23 +81,39 @@ namespace Client.Scripts.Core.Locus
 
         public void SelectLocusPoint(LocusPointController locusPointController)
         {
-            if (_selectedLocusPoint != null)
+            // Remove previous selection
+            DeselectLocusPoint();
+
+            // Toggled the same one
+            if (_selectedLocusPoint == locusPointController)
             {
-                _selectedLocusPoint = null;
-                locusPointController.Deselect();
                 return;
             }
 
+            // Select new locus point
+            _selectedLocusPoint = locusPointController;
+            _selectedLocusPoint.Select();
+
+            // Apply angle to locus
             foreach (var partData in locusPointController.data.Configuration)
             {
                 var go = RobotController.Instance.GetObjectById(partData.Id);
                 switch (partData.Type)
                 {
                     case "RotaryJoint":
-                        go.GetComponent<RotaryJoint>().InitialAngle = partData.CurrentAngle;
+                        go.GetComponent<RotaryJoint>().CurrentAngle = partData.CurrentAngle;
                         break;
                 }
             }
+        }
+
+        public void DeselectLocusPoint()
+        {
+            if (_selectedLocusPoint == null)
+                return;
+
+            _selectedLocusPoint.Deselect();
+            _selectedLocusPoint = null;
         }
     }
 }

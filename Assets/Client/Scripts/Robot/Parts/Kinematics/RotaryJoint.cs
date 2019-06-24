@@ -13,19 +13,17 @@ namespace Client.Scripts.Robot.Parts.Kinematics
 
         public AngleSelectorController angleSelectorController;
 
-        private float _initialAngle = 180.0f;
+        private float _currentAngle = 180f;
 
-        public float InitialAngle
+        public float CurrentAngle
         {
-            get => _initialAngle;
+            get => _currentAngle;
             set
             {
-                _initialAngle = value;
-                SetAngle(_initialAngle);
+                SetAngle(value);
+                _currentAngle = value;
             }
         }
-
-        private float _currentAngle;
 
         private float _minAngle;
 
@@ -50,21 +48,14 @@ namespace Client.Scripts.Robot.Parts.Kinematics
             angleSelectorController.gameObject.SetActive(false);
         }
 
-        public void Setup(float mnAngle, float mxAngle, float iAngle)
+        public void Setup(float mnAngle, float mxAngle)
         {
             _minAngle = mnAngle;
             _maxAngle = mxAngle;
-            _initialAngle = iAngle;
-
-            Init();
         }
 
         protected override void Init()
         {
-            if (!(_minAngle <= _initialAngle && _initialAngle <= _maxAngle))
-                Debug.LogWarning("Initial angle is not in min/max range");
-
-            _currentAngle = _initialAngle;
         }
 
         /// <summary>
@@ -96,9 +87,6 @@ namespace Client.Scripts.Robot.Parts.Kinematics
         public new void Initialize(Transform body1, Transform body2)
         {
             base.Initialize(body1, body2);
-
-            // Set initial angle
-            SetAngle(PartData.InitialAngle);
         }
 
         public void Select()
@@ -117,7 +105,6 @@ namespace Client.Scripts.Robot.Parts.Kinematics
             _rotationY = data.RotationY;
             MinAngle = data.MinAngle;
             MaxAngle = data.MaxAngle;
-            _initialAngle = data.InitialAngle;
         }
 
         public PartData Serialize()
@@ -129,7 +116,6 @@ namespace Client.Scripts.Robot.Parts.Kinematics
                 RotationY = _rotationY,
                 MinAngle = _minAngle,
                 MaxAngle = _maxAngle,
-                InitialAngle = _initialAngle,
             };
         }
     }

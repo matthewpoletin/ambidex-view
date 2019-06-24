@@ -464,6 +464,10 @@ Assets/AssetStoreTools*
 # Never ignore Asset meta data
 ![Aa]ssets/**/*.meta
 
+# TextMesh Pro files
+#[Aa]ssets/TextMesh*Pro/
+[Aa]ssets/TextMesh*Pro*
+
 # JetBrains Rider plugin dll
 **/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll*
 

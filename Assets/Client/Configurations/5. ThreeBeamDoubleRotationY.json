@@ -1,6 +1,6 @@
 {
-  "id": "20136505-ddb7-4bd6-95d5-9fb8224bc800",
-  "name": "Custom robot configuration",
+  "id": "f776b096-da3c-427c-ba64-228fa915f42c",
+  "name": "Specific robot configuration",
   "description": "Test Robot Manipulator configuration",
   "author": "Matthew Poletin",
   "createDate": "2019-06-10T11:44:34",
@@ -22,15 +22,37 @@
         "id": "46d39d18-f342-44ad-9aff-44bcb7a2591f",
         "type": "RotaryJoint",
         "length": 0.0,
-        "rotationY": 0.0,
+        "rotationY": 90.0,
         "minAngle": 90.0,
         "maxAngle": 270.0,
-        "initialAngle": 0.0,
+        "initialAngle": 180.0,
         "angle": 0.0,
         "diameter": 0.0
       },
       {
         "id": "ecc0055b-ac52-4f68-b709-96cadf993c40",
+        "type": "Beam",
+        "length": 1.0,
+        "rotationY": 0.0,
+        "minAngle": 0.0,
+        "maxAngle": 0.0,
+        "initialAngle": 0.0,
+        "angle": 0.0,
+        "diameter": 1.0
+      },
+      {
+        "id": "9a5e71f4-35fa-43aa-9318-1a7a04f0eec0",
+        "type": "RotaryJoint",
+        "length": 0.0,
+        "rotationY": 90.0,
+        "minAngle": 90.0,
+        "maxAngle": 270.0,
+        "initialAngle": 131.142853,
+        "angle": 0.0,
+        "diameter": 0.0
+      },
+      {
+        "id": "b3274745-54e8-40ae-8b2f-bf79c72266fa",
         "type": "Beam",
         "length": 1.0,
         "rotationY": 0.0,
