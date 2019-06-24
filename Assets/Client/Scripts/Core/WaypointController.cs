@@ -27,7 +27,22 @@ namespace Client.Scripts.Core
 
         public void Initialize(WaypointData data)
         {
+            id = data.Id;
             transform.localPosition = new Vector3(data.Position.X, data.Position.Y, data.Position.Z);
+        }
+
+        public WaypointData Serialize()
+        {
+            return new WaypointData
+            {
+                Id = id,
+                Position = new Position
+                {
+                    X = transform.position.x,
+                    Y = transform.position.y,
+                    Z = transform.position.z,
+                }
+            };
         }
 
         private void OnTriggerEnter(Collider other)
@@ -35,7 +50,7 @@ namespace Client.Scripts.Core
             if (other.CompareTag("Tip"))
             {
                 LogController.Instance.WriteInfoLog($"{name} collected");
-                Destroy(gameObject);
+                WaypointManager.Instance.CollectWaypoint(id);
             }
         }
 

@@ -47,7 +47,7 @@ namespace Client.Scripts.Robot
         public readonly Dictionary<Guid, ItemData> ItemData =
             new Dictionary<Guid, ItemData>();
 
-        public string lastFileName = null;
+        private string lastFileName = null;
 
         public void ClearRoot()
         {

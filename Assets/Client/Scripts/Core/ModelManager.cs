@@ -93,6 +93,9 @@ namespace Client.Scripts.Core
                 waypointsButton.interactable = value != ApplicationMode.Waypoints;
                 simulateButton.interactable = value != ApplicationMode.Simulation;
 
+                WaypointManager.Instance.WaypointsShown =
+                    value == ApplicationMode.Waypoints || value == ApplicationMode.Simulation;
+
                 switch (value)
                 {
                     case ApplicationMode.Unloaded:
@@ -222,7 +225,8 @@ namespace Client.Scripts.Core
             addPartButton.onClick.AddListener(OnAddPartButtonClick);
             saveDesignButton.onClick.AddListener(OnSaveDesignButtonClick);
             addWaypointButton.onClick.AddListener(OnAddWaypointButtonClick);
-            syncWaypointsButton.onClick.AddListener(OnSyncWaypointsButtonClick);
+            saveWaypointsButton.onClick.AddListener(OnSaveWaypointsButtonClick);
+            undoWaypointsButton.onClick.AddListener(OnUndoWaypointsButtonClick);
             playPauseButton.onClick.AddListener(OnPlayPauseButtonClick);
             restartButton.onClick.AddListener(OnRestartButtonClick);
             closeButton.onClick.AddListener(OnCloseButtonClick);
@@ -282,7 +286,8 @@ namespace Client.Scripts.Core
         public Button saveDesignButton;
 
         public Button addWaypointButton;
-        public Button syncWaypointsButton;
+        public Button saveWaypointsButton;
+        public Button undoWaypointsButton;
 
         public Button restartButton;
         public Button playPauseButton;
@@ -328,10 +333,14 @@ namespace Client.Scripts.Core
             InfoPanelController.Instance.ShowWaypointEditor(newWaypoint);
         }
 
-        private void OnSyncWaypointsButtonClick()
+        private void OnSaveWaypointsButtonClick()
         {
             CoreService.SyncWaypointPath();
-            Debug.Log("Sync waypoints");
+        }
+
+        private void OnUndoWaypointsButtonClick()
+        {
+            // TODO: Undo waypoints changes
         }
 
         private void OnPlayPauseButtonClick()

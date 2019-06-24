@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Client.Scripts.Service.Model;
 using Client.Scripts.Ui.Editors;
 using UnityEngine;
@@ -40,8 +39,10 @@ namespace Client.Scripts.Core
         /// </summary>
         public void Clear()
         {
-            foreach (Transform child in waypointsHolder)
-                Destroy(child.gameObject);
+            foreach (var pair in _waypoints)
+                Destroy(pair.Value.Item1);
+
+            _waypoints.Clear();
         }
 
         /// <summary>
@@ -52,10 +53,7 @@ namespace Client.Scripts.Core
         {
             foreach (var dataItem in waypoints)
             {
-                var waypointGo = Instantiate(waypointPrefab, waypointsHolder);
-                var waypointController = waypointGo.GetComponent<WaypointController>();
-                waypointController.Initialize(dataItem);
-                _waypoints.Add(dataItem.Id, Tuple.Create(waypointGo, waypointController));
+                CreateWaypoint(dataItem);
             }
         }
 
@@ -94,11 +92,19 @@ namespace Client.Scripts.Core
         /// <returns>Configuration of waypoints</returns>
         public WaypointsConfiguration Serialize()
         {
-            // TODO: Serialize properly
             return new WaypointsConfiguration
             {
-                Waypoints = _lastLoadedData.ToList(),
+                Waypoints = SerializeData(),
             };
+        }
+
+        public List<WaypointData> SerializeData()
+        {
+            var data = new List<WaypointData>();
+            foreach (var pair in _waypoints)
+                data.Add(pair.Value.Item2.Serialize());
+
+            return data;
         }
 
         #endregion
@@ -126,8 +132,25 @@ namespace Client.Scripts.Core
 
         public WaypointController CreateWaypoint()
         {
-            // TODO:
-            return null;
+            return CreateWaypoint(new WaypointData
+            {
+                Id = Guid.NewGuid(),
+                Position = new Position
+                {
+                    X = 0f,
+                    Y = 0f,
+                    Z = 0f,
+                }
+            });
+        }
+
+        private WaypointController CreateWaypoint(WaypointData data)
+        {
+            var waypointGo = Instantiate(waypointPrefab, waypointsHolder);
+            var waypointController = waypointGo.GetComponent<WaypointController>();
+            waypointController.Initialize(data);
+            _waypoints.Add(data.Id, Tuple.Create(waypointGo, waypointController));
+            return waypointController;
         }
 
         public void DeleteWaypoint(Guid id)
@@ -138,5 +161,50 @@ namespace Client.Scripts.Core
             Destroy(tuple.Item1);
             _waypoints.Remove(id);
         }
+
+        public void CollectWaypoint(Guid id)
+        {
+            if (!_waypoints.TryGetValue(id, out var tuple))
+                return;
+
+            tuple.Item1.SetActive(false);
+            // TODO: Calculate this is the last
+        }
+
+        public void SaveData()
+        {
+            var data = new List<WaypointData>();
+            foreach (var pair in _waypoints)
+            {
+                data.Add(pair.Value.Item2.Serialize());
+            }
+
+            _lastLoadedData = data;
+        }
+
+        #region Activity
+
+        public bool WaypointsShown
+        {
+            set
+            {
+                if (value)
+                    ShowAll();
+                else
+                    HideAll();
+            }
+        }
+
+        public void ShowAll()
+        {
+            waypointsHolder.gameObject.SetActive(true);
+        }
+
+        public void HideAll()
+        {
+            waypointsHolder.gameObject.SetActive(false);
+        }
+
+        #endregion
     }
 }
