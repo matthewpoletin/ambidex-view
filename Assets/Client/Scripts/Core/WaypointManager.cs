@@ -125,6 +125,7 @@ namespace Client.Scripts.Core
 
         public void UnselectWaypoint()
         {
+            InfoPanelController.Instance.HideWaypointEditor();
             _selectedWaypoint = null;
         }
 

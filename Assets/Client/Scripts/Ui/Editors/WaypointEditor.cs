@@ -58,7 +58,7 @@ namespace Client.Scripts.Ui.Editors
         {
             _selectedWaypoint = waypointController;
 
-            var waypointPosition = waypointController.transform.position;
+            var waypointPosition = waypointController.transform.localPosition;
             xValueInputField.text = waypointPosition.x.ToString();
             yValueInputField.text = waypointPosition.y.ToString();
             zValueInputField.text = waypointPosition.z.ToString();

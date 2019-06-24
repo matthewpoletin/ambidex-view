@@ -78,13 +78,19 @@ namespace Client.Scripts.Core
                         LocusManager.Instance.Hide();
                         IsLocusShown = false;
                         break;
+                    case ApplicationMode.Waypoints:
+                        WaypointManager.Instance.UnselectWaypoint();
+                        break;
                     case ApplicationMode.Simulation:
                         SimulationEnabled = false;
                         break;
                 }
 
+                InfoPanelController.Instance.HideAll();
+
                 // New modes
                 editModeButtons.SetActive(value == ApplicationMode.Construction);
+                locusModeButtons.SetActive(value == ApplicationMode.Locus);
                 waypointsModeButtons.SetActive(value == ApplicationMode.Waypoints);
                 simulateModeButtons.SetActive(value == ApplicationMode.Simulation);
                 closeButton.gameObject.SetActive(value != ApplicationMode.Unloaded);
@@ -112,7 +118,6 @@ namespace Client.Scripts.Core
                         modeHolder.SetActive(true);
                         modeText.text = "Locus";
                         modeBackground.color = locusModeColor;
-                        IsLocusShown = true;
                         break;
                     case ApplicationMode.Waypoints:
                         modeHolder.SetActive(true);
@@ -188,6 +193,7 @@ namespace Client.Scripts.Core
             }
         }
 
+        // TODO: Move into LocusManager
         private bool _isLocusShown = false;
 
         public bool IsLocusShown
@@ -210,11 +216,6 @@ namespace Client.Scripts.Core
             }
         }
 
-        private void OnLocusButtonClick()
-        {
-            Mode = ApplicationMode.Locus;
-        }
-
         private void Start()
         {
             designsButton.onClick.AddListener(OnDesignsButtonClick);
@@ -222,13 +223,17 @@ namespace Client.Scripts.Core
             locusButton.onClick.AddListener(OnLocusButtonClick);
             waypointsButton.onClick.AddListener(OnWaypointsButtonClick);
             simulateButton.onClick.AddListener(OnSimulateButtonClick);
+
             addPartButton.onClick.AddListener(OnAddPartButtonClick);
             saveDesignButton.onClick.AddListener(OnSaveDesignButtonClick);
+            syncLocusButton.onClick.AddListener(OnSyncLocusButtonClick);
             addWaypointButton.onClick.AddListener(OnAddWaypointButtonClick);
             saveWaypointsButton.onClick.AddListener(OnSaveWaypointsButtonClick);
             undoWaypointsButton.onClick.AddListener(OnUndoWaypointsButtonClick);
+            uploadButton.onClick.AddListener(OnUploadButtonClick);
             playPauseButton.onClick.AddListener(OnPlayPauseButtonClick);
             restartButton.onClick.AddListener(OnRestartButtonClick);
+
             closeButton.onClick.AddListener(OnCloseButtonClick);
 
             SimulationComplete = false;
@@ -285,16 +290,20 @@ namespace Client.Scripts.Core
         public Button addPartButton;
         public Button saveDesignButton;
 
+        public Button syncLocusButton;
+
         public Button addWaypointButton;
         public Button saveWaypointsButton;
         public Button undoWaypointsButton;
 
-        public Button restartButton;
+        public Button uploadButton;
         public Button playPauseButton;
+        public Button restartButton;
 
         public Button closeButton;
 
         public GameObject editModeButtons;
+        public GameObject locusModeButtons;
         public GameObject waypointsModeButtons;
         public GameObject simulateModeButtons;
 
@@ -306,6 +315,11 @@ namespace Client.Scripts.Core
         private void OnEditButtonClick()
         {
             Mode = ApplicationMode.Construction;
+        }
+
+        private void OnLocusButtonClick()
+        {
+            Mode = ApplicationMode.Locus;
         }
 
         private void OnWaypointsButtonClick()
@@ -327,6 +341,12 @@ namespace Client.Scripts.Core
             SaveDesign();
         }
 
+        private void OnSyncLocusButtonClick()
+        {
+            // TODO: Implement
+            IsLocusShown = true;
+        }
+
         private void OnAddWaypointButtonClick()
         {
             var newWaypoint = WaypointManager.Instance.CreateWaypoint();
@@ -341,6 +361,11 @@ namespace Client.Scripts.Core
         private void OnUndoWaypointsButtonClick()
         {
             // TODO: Undo waypoints changes
+        }
+
+        private void OnUploadButtonClick()
+        {
+            // TODO: Create and make simulation request
         }
 
         private void OnPlayPauseButtonClick()
